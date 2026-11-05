@@ -1,0 +1,271 @@
+<!doctype html><html lang="et"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Oleksandr Nadiein | E-Portfoolio</title><style>
+:root{--bg:#0d0e11;--panel:#191a20;--line:#393037;--red:#f0444e;--text:#f4f1f2;--muted:#b9b5bd}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 70% 0%,#30171b 0%,#0d0e11 45%);color:var(--text);font:16px 'Segoe UI',Arial,sans-serif;min-height:100vh}button{font:inherit}header{position:sticky;top:0;z-index:10;background:#101014ed;border-bottom:1px solid #3b272b;backdrop-filter:blur(12px);display:flex;align-items:center;justify-content:space-between;padding:14px 24px;gap:12px}header strong{font-size:19px}header small{display:block;color:#bbb;margin-top:3px}.menu-toggle{display:none;background:#2d2024;color:white;border:1px solid #6b353b;border-radius:8px;padding:8px 12px}.layout{display:grid;grid-template-columns:280px minmax(0,1fr);min-height:calc(100vh - 74px)}aside{border-right:1px solid #3b272b;background:#111115;padding:16px 12px;overflow:auto;max-height:calc(100vh - 74px);position:sticky;top:74px}aside h3{font-size:12px;text-transform:uppercase;letter-spacing:3px;color:#bd7b82;padding-left:13px}.navbtn,.subbtn{display:block;width:100%;text-align:left;border:0;border-radius:9px;color:#ddd;background:transparent;padding:12px 13px;cursor:pointer;line-height:1.35}.navbtn:hover,.subbtn:hover{background:#2a1b20}.navbtn.active,.subbtn.active{background:#542026;color:#fff;box-shadow:inset 3px 0 var(--red)}.sub{padding-left:15px;border-left:1px solid #473037;margin-left:17px}.subbtn{font-size:13px;color:#c6c1c5;padding:9px 10px}main{padding:35px clamp(18px,5vw,72px);max-width:1400px;width:100%;margin:auto}.hero{text-align:center;padding:50px 15px 55px;position:relative}.hero .icon{font-size:44px}.hero h1{font-size:clamp(37px,6vw,82px);letter-spacing:.09em;margin:8px 0 12px;text-shadow:0 0 30px #c13b4688}.rule{height:2px;width:220px;margin:16px auto;background:linear-gradient(90deg,transparent,var(--red),transparent);box-shadow:0 0 15px var(--red)}.hero h2{font-size:clamp(22px,3vw,37px);margin:24px 0 8px}.code{color:#ff7079;letter-spacing:5px;font-weight:700}.tag{display:inline-block;border:1px solid #f0444e;border-radius:12px;padding:13px 38px;box-shadow:0 0 25px #f0444e44,inset 0 0 25px #f0444e22;letter-spacing:4px;font-weight:800;margin:16px 0}.hero p{color:var(--muted)}.features,.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{background:linear-gradient(145deg,#211c21,#141419);border:1px solid #453039;border-radius:15px;padding:24px;box-shadow:0 10px 35px #0005}.card h3{margin:0 0 12px;color:#fff}.card p{color:var(--muted);line-height:1.65}.card button,.back{background:#3b1b21;border:1px solid #9a3b46;border-radius:8px;color:white;padding:9px 15px;cursor:pointer}.card button:hover,.back:hover{background:#74232e}.section-title{font-size:clamp(28px,4vw,48px);margin:15px 0 8px}.section-title:after{content:'';display:block;width:90px;height:3px;background:var(--red);margin-top:15px;box-shadow:0 0 15px var(--red)}.lead{color:var(--muted);line-height:1.7;margin:22px 0 28px}.about{display:grid;grid-template-columns:minmax(210px,360px) 1fr;gap:35px;align-items:center}.portrait{min-height:360px;border:2px solid #66515a;border-radius:20px;background:linear-gradient(135deg,#29262b,#101014);display:flex;flex-direction:column;justify-content:center;align-items:center;color:#bbb;box-shadow:0 22px 35px #0008;overflow:hidden}.portrait img{width:100%;height:100%;object-fit:cover;display:none}.portrait.has-image img{display:block}.portrait.has-image .photo-hint{display:none}.photo-hint{text-align:center;padding:25px}.photo-hint label{display:block;margin-top:16px;background:#66252f;border-radius:8px;padding:10px;cursor:pointer}.about ul{padding-left:22px;line-height:2.1;color:#ddd}.about li::marker{color:var(--red)}.crumb{font-size:13px;color:#ce8c92;letter-spacing:1px}.empty{border:1px dashed #6b454b;padding:20px;border-radius:12px;color:#aaa;margin-top:24px}.hidden{display:none!important}@media(max-width:900px){.features,.cards{grid-template-columns:1fr 1fr}.about{grid-template-columns:1fr}.portrait{max-width:370px}}@media(max-width:650px){header{padding:12px}.menu-toggle{display:block}.layout{display:block}aside{display:none;position:fixed;top:65px;bottom:0;left:0;width:min(85vw,320px);max-height:none;z-index:20;box-shadow:10px 0 40px #000b}aside.open{display:block}main{padding:20px}.features,.cards{grid-template-columns:1fr}.hero{padding:35px 0}.hero h1{letter-spacing:.02em}.tag{letter-spacing:2px;padding:12px 20px}}@media(prefers-reduced-motion:no-preference){.hero .icon{animation:float 4s ease-in-out infinite}.card{transition:transform .2s,border-color .2s}.card:hover{transform:translateY(-4px);border-color:#c04b55}@keyframes float{50%{transform:translateY(-8px)}}}
+
+/* Personal profile section integrated from supplied design */
+.personal-about{grid-template-columns:minmax(230px,420px) minmax(0,1fr);gap:clamp(25px,5vw,70px);padding:35px 0 55px}
+.photo-side{perspective:1600px;min-width:0;padding:12px}.photo-stage{position:relative;transform-style:preserve-3d;animation:portraitFloat 6s ease-in-out infinite}.photo-frame{position:relative;padding:6px;border-radius:28px;background:linear-gradient(125deg,#21191b,#a73d49,#f8d5d7,#a73d49,#21191b);background-size:350% 350%;box-shadow:0 20px 60px #0009,0 0 28px #f0444e44;animation:portraitEnter 1.3s ease-out both,frameGlow 10s linear infinite;transition:box-shadow .4s}.photo-frame:hover{box-shadow:0 28px 85px #000c,0 0 42px #f0444e88}.photo-depth{position:relative;border-radius:23px;overflow:hidden}.personal-photo{display:block;width:100%;height:auto;max-height:540px;object-fit:cover;filter:contrast(1.06) saturate(.95);transition:filter .5s}.photo-frame:hover .personal-photo{filter:contrast(1.15) saturate(1.1)}.photo-vignette{position:absolute;inset:0;background:radial-gradient(ellipse,transparent 50%,#0b080b80);pointer-events:none}.photo-shadow{position:absolute;bottom:-25px;left:12%;width:76%;height:35px;background:#f0444e55;filter:blur(23px);z-index:-2}.paws{position:absolute;inset:-25px;pointer-events:none;z-index:-1}.paws span{position:absolute;opacity:0;font-size:17px;animation:pawRise 9s ease-in-out infinite}.paws span:nth-child(1){top:5%;left:5%}.paws span:nth-child(2){top:20%;right:0;animation-delay:1.8s}.paws span:nth-child(3){top:50%;left:0;animation-delay:3.6s}.paws span:nth-child(4){top:70%;right:0;animation-delay:5.4s}.paws span:nth-child(5){top:90%;left:15%;animation-delay:7.2s}.text-side{min-width:0}.personal-title{text-align:center;font-size:clamp(26px,3vw,38px);letter-spacing:2px;color:#fff;text-shadow:0 0 25px #f0444e77;margin:0 0 15px}.personal-divider{display:flex;align-items:center;justify-content:center;gap:12px;color:#ff8089;margin-bottom:26px}.personal-divider span{display:block;width:130px;height:2px;background:linear-gradient(90deg,transparent,#ff5260,transparent);box-shadow:0 0 15px #ff5260}.personal-lines p{color:#e1d9dc;line-height:1.65;margin:0 0 13px;padding-left:27px;position:relative;animation:lineEnter .7s ease both}.personal-lines p:before{content:'🐾';position:absolute;left:0;font-size:13px}.personal-lines p:hover{color:#fff;transform:translateX(4px)}.personal-lines p:nth-child(2){animation-delay:.12s}.personal-lines p:nth-child(3){animation-delay:.24s}.personal-lines p:nth-child(4){animation-delay:.36s}.personal-lines p:nth-child(5){animation-delay:.48s}.personal-lines p:nth-child(6){animation-delay:.6s}.personal-lines p:nth-child(7){animation-delay:.72s}@keyframes portraitEnter{from{opacity:0;transform:translateX(-65px) rotateY(12deg)}to{opacity:1;transform:none}}@keyframes portraitFloat{50%{transform:translateY(-7px)}}@keyframes frameGlow{to{background-position:350% 50%}}@keyframes pawRise{0%{opacity:0;transform:translateY(0) scale(.5)}25%{opacity:.8}100%{opacity:0;transform:translateY(-95px) rotate(30deg) scale(.5)}}@keyframes lineEnter{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}@media(max-width:900px){.personal-about{grid-template-columns:1fr}.photo-side{max-width:420px;margin:auto;width:100%}.text-side{max-width:620px;margin:auto}}@media(prefers-reduced-motion:reduce){.photo-stage,.photo-frame,.paws span,.personal-lines p{animation:none}}
+
+  .hygiene-page, .hygiene-page * { box-sizing: border-box; }
+  .hygiene-page {
+    width: 100%;
+    max-width: 1100px;
+    margin: 28px auto;
+    padding: 0 16px;
+    overflow-x: hidden;
+    color: #444450;
+    font-family: 'Segoe UI', Arial, sans-serif;
+  }
+  .hygiene-page .hygiene-hero {
+    position: relative;
+    margin: 0 4px 22px;
+    padding: 18px 22px 20px;
+    overflow: hidden;
+    border: 1px solid rgba(112,157,86,.18);
+    border-radius: 16px;
+    background: linear-gradient(110deg, rgba(255,255,255,.72), rgba(233,242,222,.72), rgba(255,255,255,.72));
+    box-shadow: 0 8px 24px rgba(79,111,62,.08);
+    animation: hero-arrive .7s ease both;
+  }
+  .hygiene-page .hero-kicker { display: inline-block; color: #64894f; font-size: 11px; font-weight: 700; letter-spacing: 2.4px; }
+  .hygiene-page .intro { margin: 7px 0 8px; color: #30372d; font-size: clamp(22px, 3vw, 30px); font-weight: 700; letter-spacing: .2px; line-height: 1.25; }
+  .hygiene-page .hero-note { margin: 8px 0 0; color: #5b6257; font-size: 15px; line-height: 1.6; }
+  .hygiene-page .hero-rule { display: block; width: 92px; height: 5px; border-radius: 9px; background: linear-gradient(90deg,#93bd75,#6b9b4b,#b2d392); background-size: 200% 100%; box-shadow: 0 2px 8px rgba(107,155,75,.25); animation: hero-glow 4s ease-in-out infinite alternate; }
+  @keyframes hero-arrive { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes hero-glow { to { background-position: 100% 50%; box-shadow: 0 2px 13px rgba(107,155,75,.42); } }
+  .hygiene-page .accordion-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: start; }
+  .hygiene-page .accordion {
+    width: 100%;
+    min-width: 0;
+    margin: 18px 0;
+    overflow: hidden;
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(250,250,252,.96), rgba(240,240,245,.96));
+    box-shadow: 0 12px 35px rgba(40,40,60,.15), 0 3px 10px rgba(40,40,60,.08), inset 0 1px 0 rgba(255,255,255,.9);
+    transition: box-shadow .35s ease;
+  }
+  .hygiene-page .accordion:hover,
+  .hygiene-page .accordion.open {
+    box-shadow: 0 16px 42px rgba(40,40,60,.22), 0 5px 14px rgba(40,40,60,.11), inset 0 1px 0 rgba(255,255,255,.9);
+  }
+  .hygiene-page .accordion-header {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    padding: 20px 26px;
+    border: 0;
+    background: transparent;
+    color: #2a2a35;
+    cursor: pointer;
+    font: inherit;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    text-align: left;
+  }
+  .hygiene-page .accordion-header:hover,
+  .hygiene-page .accordion-header:focus-visible {
+    background: linear-gradient(90deg, rgba(200,200,215,.35), rgba(230,230,240,.15));
+    outline: 2px solid #77778b;
+    outline-offset: -3px;
+  }
+  .hygiene-page .header-text {
+    flex: 1;
+    background: linear-gradient(90deg, #2a2a35, #6b6b80, #a0a0b0, #6b6b80, #2a2a35);
+    background-size: 300% 100%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: hygiene-gradient 7s linear infinite;
+    filter: drop-shadow(0 2px 4px rgba(60,60,80,.2));
+  }
+  @keyframes hygiene-gradient {
+    to { background-position: 300% 50%; }
+  }
+  .hygiene-page .header-arrow {
+    color: #6b6b80;
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform .35s ease, color .35s ease;
+  }
+  .hygiene-page .accordion.open .header-arrow {
+    transform: rotate(90deg);
+    color: #2a2a35;
+  }
+  .hygiene-page .accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height .55s cubic-bezier(.22,1,.36,1);
+  }
+  .hygiene-page .accordion.open .accordion-body {
+    max-height: 1600px;
+  }
+  .hygiene-page .accordion-inner {
+    padding: 0 26px 26px;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity .35s ease, transform .35s ease;
+  }
+  .hygiene-page .accordion.open .accordion-inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .hygiene-page .content-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .hygiene-page .line {
+    min-width: 0;
+    position: relative;
+    flex: 1 1 auto;
+    margin: 0;
+    padding-left: 20px;
+    color: #444450;
+    font-size: 16px;
+    line-height: 1.8;
+  }
+  .hygiene-page .line::before {
+    position: absolute;
+    top: 9px;
+    left: 2px;
+    width: 6px;
+    height: 6px;
+    background: linear-gradient(135deg, #a0a0b0, #2a2a35);
+    box-shadow: 0 0 6px rgba(60,60,80,.35);
+    content: '';
+    transform: rotate(45deg);
+  }
+  .hygiene-page .photo-block {
+    position: relative;
+    flex: 0 0 160px;
+    overflow: hidden;
+    width: 160px;
+    padding: 5px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #2a2a35, #6b6b80, #d8d8e0, #6b6b80, #2a2a35);
+    background-size: 300% 300%;
+    box-shadow: 0 12px 30px rgba(40,40,60,.28);
+    animation: hygiene-frame 8s linear infinite;
+    transition: transform .35s ease, box-shadow .35s ease;
+  }
+  @keyframes hygiene-frame {
+    to { background-position: 300% 50%; }
+  }
+  .hygiene-page .photo-block:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 18px 42px rgba(40,40,60,.38);
+  }
+  .hygiene-page .photo-block img {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  .hygiene-page .photo-shine {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    border-radius: 14px;
+    pointer-events: none;
+  }
+  .hygiene-page .photo-shine::before {
+    position: absolute;
+    top: -60%;
+    left: -80%;
+    width: 45%;
+    height: 220%;
+    background: linear-gradient(115deg, transparent 30%, rgba(255,255,255,.65) 50%, transparent 70%);
+    content: '';
+    transform: rotate(20deg);
+    animation: hygiene-shine 6s ease-in-out infinite 2s;
+  }
+  @keyframes hygiene-shine {
+    0%, 100% { left: -80%; opacity: 0; }
+    10% { opacity: 1; }
+    35% { left: 130%; opacity: 0; }
+  }
+  .hygiene-page .no-photo {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(0, .85fr);
+    gap: 12px;
+    align-items: start;
+  }
+  .hygiene-page .hygiene-list {
+    margin: 0 0 16px;
+    padding-left: 24px;
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .hygiene-page .hygiene-list li {
+    margin: 0 0 8px;
+  }
+  .hygiene-page .reflection {
+    margin-top: 8px;
+  }
+  @media (max-width: 640px) {
+    .hygiene-page .accordion-grid { grid-template-columns: 1fr; }
+    .hygiene-page .no-photo { grid-template-columns: 1fr; }
+    .hygiene-page .accordion-header {
+      padding: 18px 20px;
+      font-size: 18px;
+      letter-spacing: .7px;
+    }
+    .hygiene-page .accordion-inner {
+      padding: 0 20px 22px;
+    }
+    .hygiene-page .content-row {
+      flex-direction: column;
+      align-items: stretch;
+    }
+    .hygiene-page .photo-block {
+      order: -1;
+      align-self: center;
+      flex: 0 1 auto;
+      width: 100%;
+      max-width: 320px;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hygiene-page *,
+    .hygiene-page *::before,
+    .hygiene-page *::after {
+      animation-duration: .01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+    }
+  }
+
+.hygiene-page{color:#eee;margin:10px auto 35px}.hygiene-page .hygiene-hero{background:linear-gradient(115deg,#261a1e,#18171c);border-color:#76313b;box-shadow:0 10px 35px #0008}.hygiene-page .hero-kicker{color:#ff8990}.hygiene-page .intro{color:#fff}.hygiene-page .hero-note{color:#c9bdc0}.hygiene-page .hero-rule{background:linear-gradient(90deg,#8f202e,#ff5361,#ffa0a5);box-shadow:0 0 15px #f0444e88}.hygiene-page .accordion{background:linear-gradient(135deg,#282026,#17171c);border:1px solid #66313a;box-shadow:0 12px 35px #0008}.hygiene-page .accordion:hover,.hygiene-page .accordion.open{box-shadow:0 16px 42px #000a,0 0 22px #e83d4d33}.hygiene-page .accordion-header{color:#fff}.hygiene-page .accordion-header:hover,.hygiene-page .accordion-header:focus-visible{background:#50212b;outline-color:#ef5a66}.hygiene-page .header-text{background:linear-gradient(90deg,#fff,#ff8790,#fff);background-size:300% 100%;background-clip:text;-webkit-background-clip:text}.hygiene-page .header-arrow,.hygiene-page .accordion.open .header-arrow{color:#ff6672}.hygiene-page .line,.hygiene-page .hygiene-list{color:#e5dce0}.hygiene-page .line::before{background:#f0444e}.hygiene-page .photo-block{background:linear-gradient(135deg,#3b1820,#ef5461,#ffb3b9,#3b1820)}.hygiene-page .no-photo{display:block}.hygiene-page .accordion-grid{grid-template-columns:repeat(2,minmax(0,1fr))}@media(max-width:850px){.hygiene-page .accordion-grid{grid-template-columns:1fr}.hygiene-page .content-row{flex-direction:column}.hygiene-page .photo-block{flex:0 1 auto;max-width:320px;width:100%}}
+
+/* Mikroskoobifotode galerii */
+.hygiene-page .microscopy{margin:34px 4px 12px;padding:26px;border:1px solid #78323b;border-radius:20px;background:linear-gradient(145deg,#26191e,#101015);box-shadow:0 18px 45px #0008}
+.hygiene-page .micro-kicker{color:#ff8b94;font-size:11px;letter-spacing:2px;font-weight:800}
+.hygiene-page .micro-intro h2{margin:8px 0;color:#fff;font-size:clamp(22px,3vw,31px)}
+.hygiene-page .micro-intro p{color:#bfb6bc;margin:0 0 24px}
+.hygiene-page .micro-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.hygiene-page .micro-card{margin:0;min-width:0;overflow:hidden;border:1px solid #71313b;border-radius:16px;background:#1b181d;box-shadow:0 8px 25px #0007;transition:transform .3s,box-shadow .3s,border-color .3s}
+.hygiene-page .micro-card:hover{transform:translateY(-6px);border-color:#ff6672;box-shadow:0 12px 35px #000a,0 0 24px #e83d4d44}
+.hygiene-page .micro-card a{display:block;overflow:hidden;aspect-ratio:4/5;background:#08080a}
+.hygiene-page .micro-card img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s}
+.hygiene-page .micro-card:hover img{transform:scale(1.06)}
+.hygiene-page .micro-card figcaption{padding:15px 17px;color:#fff;font-size:18px;font-weight:750;display:flex;justify-content:space-between;align-items:center}
+.hygiene-page .micro-card figcaption span{color:#ff6d7b}
+@media(max-width:720px){.hygiene-page .micro-grid{grid-template-columns:1fr}.hygiene-page .microscopy{padding:18px}.hygiene-page .micro-card a{aspect-ratio:5/4}}
+</style></head><body><header><div><strong>⚔ Oleksandr Nadiein</strong><small>LIHAMEISTER · E-Portfoolio</small></div><button class="menu-toggle" id="toggle">☰ Menüü</button></header><div class="layout"><aside id="sidebar"><h3>Leheküljed</h3><nav id="nav"></nav></aside><main id="content"></main></div><script>
+const hygieneMarkup="<div class=\"hygiene-page\">\n  <div class=\"hygiene-hero\"><span class=\"hero-kicker\">PUHTUS · HÜGIEEN · OHUTUS</span><p class=\"intro\">Puhas töökoht. Ohutu toit.</p><span class=\"hero-rule\" aria-hidden=\"true\"></span><p class=\"hero-note\">Siin on minu praktiline töö ja toiduohutuse põhimõtted.</p></div>\n\n  <div class=\"accordion-grid\">\n  <section class=\"accordion\">\n    <button class=\"accordion-header\" id=\"hygiene-title-1\" aria-expanded=\"false\" aria-controls=\"hygiene-panel-1\">\n      <span class=\"header-text\">Mustuse proov</span>\n      <span class=\"header-arrow\" aria-hidden=\"true\">›</span>\n    </button>\n    <div class=\"accordion-body\" id=\"hygiene-panel-1\" role=\"region\" aria-labelledby=\"hygiene-title-1\" aria-hidden=\"true\">\n      <div class=\"accordion-inner\">\n        <div class=\"content-row\">\n          <p class=\"line\">Võtsin suure vatitupsu ja niisutasin seda veidi steriilse lahusega. Seejärel pühkisin vatitikuga põhjalikult käte nahka, eriti sõrmede vahelt, et koguda võimalikult palju materjali. Kandsin proovi kapslile ja jaotasin selle siksakiliste liigutustega ühtlaselt. Töötasin hoolikalt, et mitte nahka vigastada ega proovi kõrvalise mustusega saastada.</p>\n          <div class=\"photo-block\">\n            <img src=\"https://i.ibb.co/XZN79sRv/1000003824.jpg\" alt=\"Mustuse proovi võtmise töö\">\n            <div class=\"photo-shine\" aria-hidden=\"true\"></div>\n          </div>\n        </div>\n      </div>\n    </div>\n  </section>\n\n  <section class=\"accordion\">\n    <button class=\"accordion-header\" id=\"hygiene-title-2\" aria-expanded=\"false\" aria-controls=\"hygiene-panel-2\">\n      <span class=\"header-text\">Olulised toiduhügieeni põhimõtted</span>\n      <span class=\"header-arrow\" aria-hidden=\"true\">›</span>\n    </button>\n    <div class=\"accordion-body\" id=\"hygiene-panel-2\" role=\"region\" aria-labelledby=\"hygiene-title-2\" aria-hidden=\"true\">\n      <div class=\"accordion-inner\">\n        <div class=\"content-row no-photo\">\n          <ul class=\"hygiene-list\">\n            <li>Pesen käsi enne töö alustamist, pärast tualeti kasutamist, toore liha käsitsemist ja tööülesande vahetamisel.</li>\n            <li>Kasutan puhast tööriietust ning hoian töövahendid ja tööpinnad puhtad.</li>\n            <li>Hoian toore liha ja valmistoitu lahus, et vältida ristsaastumist.</li>\n            <li>Järgin toidu säilitamisel töökoha juhiseid ja märgistusel olevaid tingimusi.</li>\n            <li>Puhastan tööpinnad ja töövahendid ning kasutan puhastus- ja desinfitseerimisvahendeid juhendi järgi.</li>\n          </ul>\n          <p class=\"line reflection\">Need põhimõtted aitavad hoida töökoha puhtana ja toidu ohutuna.</p>\n        </div>\n      </div>\n    </div>\n  </section>\n  </div>\n\n<section class=\"microscopy\" aria-labelledby=\"microscopy-heading\">\n  <div class=\"micro-intro\"><span class=\"micro-kicker\">PRAKTILINE TÖÖ · MIKROSKOOP</span><h2 id=\"microscopy-heading\">Mikroskoobiga vaadeldud proovid</h2><p>Minu praktilise töö fotod.</p></div>\n  <div class=\"micro-grid\">\n    <figure class=\"micro-card\"><a href=\"https://i.imageupload.app/312966b045286f23359a.jpeg\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Vaata suurelt: Tomatikoor\"><img src=\"https://i.imageupload.app/312966b045286f23359a.jpeg\" alt=\"Tomatikoor mikroskoobi all\" loading=\"lazy\"></a><figcaption>Tomatikoor <span>↗</span></figcaption></figure>\n    <figure class=\"micro-card\"><a href=\"https://i.imageupload.app/d81510db03b779b2dbf2.jpeg\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Vaata suurelt: Pärmseen\"><img src=\"https://i.imageupload.app/d81510db03b779b2dbf2.jpeg\" alt=\"Pärmseen mikroskoobi all\" loading=\"lazy\"></a><figcaption>Pärmseen <span>↗</span></figcaption></figure>\n    <figure class=\"micro-card\"><a href=\"https://i.imageupload.app/e0cd39f469446b6d48bf.jpeg\" target=\"_blank\" rel=\"noopener noreferrer\" aria-label=\"Vaata suurelt: Hallitus\"><img src=\"https://i.imageupload.app/e0cd39f469446b6d48bf.jpeg\" alt=\"Hallitus mikroskoobi all\" loading=\"lazy\"></a><figcaption>Hallitus <span>↗</span></figcaption></figure>\n  </div>\n</section>\n</div>";
+const groups=[{title:'Home',items:[]},{title:'Juhendamine',items:[]},{title:'Toiduohutus',items:['Toiduhügieen','Müügietikett','Puhastusõpetus','Kvaliteediõpetuse alused','Pakendiõpetus']},{title:'Õpitee moodul',items:['Õpitee','Tööõigus','Majanduse ja ettevõtluse alused','Projektitöö','Karjääritee']},{title:'Liha tehnoloogia',items:['Lihavalmististe valmistamine','Sültide, tarrendtoodete valmistamine','Praetud ja küpsetatud lihatooted','Vorstide valmistamine','Sinkide valmistamine','Värske liha käitlemine','Lamba tükeldamine']},{title:'Lihatöötlemise praktika',items:['Lihatöötlemise praktika','Praktikaseminar']},{title:'Valikõpingud',items:['Valikõpingud vastavalt õppekavale']}];
+const nav=document.getElementById('nav'),content=document.getElementById('content'),sidebar=document.getElementById('sidebar');let current='Home';
+function navButton(name,sub=false){const b=document.createElement('button');b.className=(sub?'subbtn':'navbtn')+(current===name?' active':'');b.textContent=(sub?'↳ ':'▸ ')+name;b.onclick=()=>show(name);return b}
+function renderNav(){nav.innerHTML='';groups.forEach(g=>{nav.appendChild(navButton(g.title));if(g.items.length){let div=document.createElement('div');div.className='sub';g.items.forEach(i=>div.appendChild(navButton(i,true)));nav.appendChild(div)}})}
+const esc=s=>s.replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
+function home(){return `<section class="hero"><div class="icon">⚔</div><h1>E-PORTFOOLIO</h1><div class="rule"></div><h2>Oleksandr Nadiein</h2><div class="code">LTO26</div><div class="tag">LIHAMEISTER</div><p>Lihatöötleja · Õpingud ja praktilised tööd</p></section><div class="features"><div class="card"><h3>🥩 Lihatöötlemine</h3><p>Liha tehnoloogia ja valmistamine.</p><button data-go="Liha tehnoloogia">Vaata teemasid</button></div><div class="card"><h3>⚔ Tootmine</h3><p>Praktilised tööd ja õpitud oskused.</p><button data-go="Lihatöötlemise praktika">Vaata praktikat</button></div><div class="card"><h3>🛡 Hügieen ja kvaliteet</h3><p>Toiduohutus ja kvaliteediõpetus.</p><button data-go="Toiduohutus">Vaata teemasid</button></div></div><section style="margin-top:45px"><h2 class="section-title">Minust</h2>${about()}</section>`}
+function about(){return `<div class="about personal-about"><div class="photo-side"><div class="photo-stage"><div class="photo-frame"><div class="photo-depth"><img class="personal-photo" src="https://i.ibb.co/2YjqVZWB/photo-5846144385232342910-x.jpg" alt="Oleksander Nadiein"><div class="photo-vignette"></div></div></div><div class="photo-shadow"></div><div class="paws" aria-hidden="true"><span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span><span>🐾</span></div></div></div><div class="text-side"><h2 class="personal-title">Oleksander Nadiein</h2><div class="personal-divider">🐾 <span></span> 🐾</div><div class="personal-lines"><p>Minu nimi on Oleksander Nadiein.</p><p>Minu sünnipäev on 30. märtsil.</p><p>Ma elan Tartus.</p><p>Praegu õpin Lihameistre koolis.</p><p>Varem õppisin Torma koolis.</p><p>Vabal ajal meeldib mulle sõpradega aega veeta, muusikat kuulata ja uusi asju proovida.</p><p>Olen sõbralik ja uudishimulik inimene.</p></div></div></div>`}
+
+function show(name){current=name;renderNav();sidebar.classList.remove('open');if(name==='Home'){content.innerHTML=home();}else if(name==='Toiduhügieen'){content.innerHTML=`<div class="crumb">E-PORTFOOLIO / Toiduohutus / Toiduhügieen</div><h1 class="section-title">Toiduhügieen</h1>`+hygieneMarkup+`<p style="margin-top:28px"><button class="back" data-go="Toiduohutus">← Toiduohutus</button></p>`;content.querySelectorAll('.hygiene-page .accordion').forEach(a=>{const b=a.querySelector('.accordion-header'),panel=a.querySelector('.accordion-body');b.addEventListener('click',()=>{const opened=a.classList.toggle('open');b.setAttribute('aria-expanded',String(opened));panel.setAttribute('aria-hidden',String(!opened));});});}else{const group=groups.find(g=>g.title===name);const parent=groups.find(g=>g.items.includes(name));const items=group?.items||[];content.innerHTML=`<div class="crumb">E-PORTFOOLIO / ${parent?esc(parent.title)+' / ':''}${esc(name)}</div><h1 class="section-title">${esc(name)}</h1><p class="lead">${items.length?'Vali teema, et avada selle lehekülg.':'Siia saad lisada oma õppematerjalid, fotod, ülesanded ja praktilised tööd.'}</p>${items.length?`<div class="cards">${items.map(i=>`<div class="card"><h3>${esc(i)}</h3><p>Õppematerjalid ja tehtud tööd.</p><button data-go="${esc(i)}">Ava teema</button></div>`).join('')}</div>`:`<div class="empty">📝 Selle lehe sisu saad lisada oma veebilehe redaktoris. Praegu on see kujunduse näidis.</div>`}<p style="margin-top:28px"><button class="back" data-go="Home">← Avaleht</button></p>`}content.querySelectorAll('[data-go]').forEach(b=>b.addEventListener('click',()=>show(b.dataset.go)));window.scrollTo(0,0)}
+document.getElementById('toggle').onclick=()=>sidebar.classList.toggle('open');show('Home');
+</script></body></html>
