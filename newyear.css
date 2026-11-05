@@ -41,3 +41,47 @@ body:not(.ny-theme) .ny-switch{color:#efefef;border-color:#555;background:#16151
 @keyframes nyFrame{50%{box-shadow:0 0 49px #f3d1787f,inset 0 0 32px #f7d88825}}
 @media(max-width:650px){.ny-garland{height:82px}.ny-welcome{margin:8px 0 12px;font-size:10px;padding:8px 11px}.ny-tree{font-size:43px;right:10px;bottom:10px}.ny-switch{bottom:10px;left:10px;padding:10px 11px;font-size:11px;max-width:65vw}.ny-flake:nth-child(n+22){display:none}}
 @media(prefers-reduced-motion:reduce){.ny-flake,.ny-light,body.ny-theme .hero.hero-butchery h1,body.ny-theme .profession-sign{animation:none!important}.ny-flake{display:none!important}}
+
+
+/* Live New Year countdown — gold glass neon cards */
+.ny-countdown{
+  width:min(92vw,650px);margin:12px auto 24px;padding:21px 22px 17px;
+  border:1px solid rgba(246,213,139,.36);border-radius:23px;
+  background:linear-gradient(135deg,rgba(48,32,29,.89),rgba(17,22,24,.93));
+  box-shadow:0 12px 40px #0009,inset 0 1px 0 #ffedc922,0 0 35px #eaca7022;
+  color:#fff6df;backdrop-filter:blur(14px);
+  text-align:center;position:relative;overflow:hidden;
+}
+.ny-countdown:before{content:"";position:absolute;inset:0 0 auto;height:2px;background:linear-gradient(90deg,transparent,#e75b68,#fbd783,#62d5a3,transparent)}
+.ny-countdown-kicker{display:flex;gap:11px;align-items:center;justify-content:center;font-weight:900;font-size:12px;letter-spacing:2.6px;color:#ffe5a0;margin:3px 0 16px}
+.ny-countdown-star{color:#f7cc73;font-size:16px;text-shadow:0 0 13px #f6c66399}
+.ny-countdown-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px}
+.ny-time-unit{
+ display:flex;flex-direction:column;align-items:center;justify-content:center;
+ min-width:0;min-height:94px;padding:11px 7px 10px;border-radius:14px;
+ border:1px solid #eacb7d43;
+ background:linear-gradient(180deg,#543638a6,#271e29a6);
+ box-shadow:inset 0 1px 0 #ffffff12,0 0 19px #bd8d3e13;
+}
+.ny-time-unit strong{
+ display:block;font-size:clamp(27px,4.2vw,46px);line-height:1.08;
+ font-weight:900;letter-spacing:1.5px;font-variant-numeric:tabular-nums;
+ color:#fff6db;text-shadow:0 0 14px #ffce7066;
+}
+.ny-time-unit span{color:#decba4;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-top:7px}
+.ny-time-unit:last-child{border-color:#f4d98c86;box-shadow:0 0 20px #e6ba6436,inset 0 1px 0 #ffffff1a}
+.ny-time-unit:last-child strong{color:#ffe5a0}
+.ny-countdown-zone{color:#bdb6ad!important;margin:15px 0 0!important;font-size:12px;letter-spacing:1px}
+.ny-finished{border-color:#4dd99a;background:linear-gradient(150deg,#13342d,#202331)}
+.ny-finished .ny-countdown-kicker{color:#afffd3}
+body:not(.ny-theme) .ny-countdown{display:none!important}
+@media(max-width:650px){
+ .ny-countdown{width:min(95vw,480px);padding:17px 10px 13px;margin:9px auto 15px;border-radius:18px}
+ .ny-countdown-kicker{font-size:10px;letter-spacing:1.4px;gap:6px;margin-bottom:12px}
+ .ny-countdown-grid{gap:6px}
+ .ny-time-unit{min-height:74px;border-radius:10px;padding:9px 2px}
+ .ny-time-unit strong{font-size:clamp(24px,7vw,36px);letter-spacing:0}
+ .ny-time-unit span{font-size:9px;letter-spacing:.3px}
+ .ny-countdown-zone{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.ny-countdown,.ny-time-unit{animation:none!important}}
