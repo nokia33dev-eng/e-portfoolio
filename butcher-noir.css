@@ -199,3 +199,30 @@ main>.content-panel{padding:40px 22px}
   .profession-sign:after, .hero-scene:after { animation: none !important; }
   .card, .hero-quicklinks button { transition: none !important; }
 }
+
+
+/* SHOWTIME MOTION v2 — visible red embers and premium motion */
+.hero.hero-butchery{--spot-x:50%;--spot-y:43%}
+.hero.hero-butchery .fx-embers,.hero.hero-butchery .fx-stars{position:absolute;inset:0;z-index:2;overflow:hidden;pointer-events:none}
+.hero.hero-butchery .fx-ember{position:absolute;bottom:-15px;left:var(--x);height:var(--size);width:var(--size);border-radius:50%;background:#ff536a;opacity:0;box-shadow:0 0 7px 2px #ff334e,0 0 22px 4px #f8354d80;animation:fxEmberRise var(--duration) linear var(--delay) infinite}
+.hero.hero-butchery .fx-ember:nth-child(3n){background:#ffc3b8;box-shadow:0 0 11px 2px #ff7d6c}
+.hero.hero-butchery .fx-star{position:absolute;top:var(--y);left:var(--x);width:3px;height:3px;opacity:0;border-radius:50%;background:#fff;box-shadow:0 0 9px 3px #ff6b83;animation:fxStarBlink var(--duration) ease-in-out var(--delay) infinite}
+.hero.hero-butchery .fx-light{position:absolute;inset:0;z-index:2;pointer-events:none;background:radial-gradient(ellipse 23% 26% at var(--spot-x) var(--spot-y),#ff536c20,transparent 100%);mix-blend-mode:screen}
+.hero.hero-butchery .profession-sign{box-shadow:0 0 26px #fa1b4280,inset 0 0 18px #d71c3b3d}
+.hero.hero-butchery .profession-sign:after{z-index:2}
+.hero.hero-butchery h1{animation:fxTitleShine 5s ease-in-out infinite;filter:drop-shadow(0 0 9px #f7294145)}
+.hero.hero-butchery .hero-content{animation:portfolio-arrive .95s cubic-bezier(.18,.8,.22,1) both}
+.hero.hero-butchery .hero-quicklinks svg{animation:fxIconPulse 4s ease-in-out infinite}
+.hero.hero-butchery .hero-quicklinks button:nth-child(2) svg{animation-delay:.7s}
+.hero.hero-butchery .hero-quicklinks button:nth-child(3) svg{animation-delay:1.4s}
+.fx-reveal{opacity:0;transform:translateY(27px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.fx-reveal.fx-shown{opacity:1;transform:none}
+.fx-stagger:nth-child(2){transition-delay:.10s}
+.fx-stagger:nth-child(3){transition-delay:.20s}
+.fx-stagger:nth-child(4){transition-delay:.30s}
+@keyframes fxEmberRise{0%{transform:translate3d(0,0,0) scale(.5);opacity:0}12%{opacity:.86}78%{opacity:.5}100%{transform:translate3d(var(--drift),-820px,0) scale(.18);opacity:0}}
+@keyframes fxStarBlink{0%,100%{opacity:0;transform:scale(.5)}48%{opacity:.9;transform:scale(1.5)}}
+@keyframes fxTitleShine{0%,100%{filter:drop-shadow(0 0 8px #fa2d4642)}50%{filter:drop-shadow(0 0 22px #ff355e9c)}}
+@keyframes fxIconPulse{0%,100%{filter:drop-shadow(0 0 6px #ff2945)}50%{filter:drop-shadow(0 0 18px #ff3b5b)}}
+@media(max-width:650px){.hero.hero-butchery .fx-ember:nth-child(n+13){display:none}}
+@media(prefers-reduced-motion:reduce){.hero.hero-butchery .fx-embers,.hero.hero-butchery .fx-stars,.hero.hero-butchery .fx-light{display:none!important}.hero.hero-butchery h1,.hero.hero-butchery .hero-content,.hero.hero-butchery .hero-quicklinks svg{animation:none!important}.fx-reveal{opacity:1!important;transform:none!important;transition:none!important}}
