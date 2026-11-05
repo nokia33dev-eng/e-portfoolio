@@ -69,7 +69,53 @@
       badge.textContent='Häid jõule ja head uut aastat 2027!';
       content.prepend(badge);
     }
+    ensureCountdown(content);
   }
+
+  // Real-time countdown to 1 Jan 2027, midnight in Estonia (UTC+2 in winter).
+  const midnight2027=new Date('2027-01-01T00:00:00+02:00').getTime();
+  function ensureCountdown(heroContent){
+    if(!heroContent || heroContent.querySelector('.ny-countdown'))return;
+    const panel=document.createElement('section');
+    panel.className='ny-countdown';
+    panel.setAttribute('aria-label','Aega uue aastani');
+    panel.innerHTML=
+      '<div class="ny-countdown-kicker"><span class="ny-countdown-star" aria-hidden="true">✦</span> UUE AASTANI ON JÄÄNUD <span class="ny-countdown-star" aria-hidden="true">✦</span></div>'+
+      '<div class="ny-countdown-grid" role="timer" aria-label="Aega uue aastani">'+
+      '<div class="ny-time-unit"><strong data-ny-unit="days">00</strong><span>Päeva</span></div>'+
+      '<div class="ny-time-unit"><strong data-ny-unit="hours">00</strong><span>Tundi</span></div>'+
+      '<div class="ny-time-unit"><strong data-ny-unit="minutes">00</strong><span>Minutit</span></div>'+
+      '<div class="ny-time-unit"><strong data-ny-unit="seconds">00</strong><span>Sekundit</span></div>'+
+      '</div><p class="ny-countdown-zone">1. jaanuar 2027 · 00:00 · Eesti aeg 🇪🇪</p>';
+    const after=heroContent.querySelector('.hero-subtitle');
+    if(after)after.insertAdjacentElement('afterend',panel);
+    else heroContent.appendChild(panel);
+    updateCountdown();
+  }
+  function updateCountdown(){
+    const panel=document.querySelector('#content .ny-countdown');
+    if(!panel)return;
+    const diff=Math.max(0,midnight2027-Date.now());
+    const totalSeconds=Math.ceil(diff/1000);
+    const vals={
+      days:Math.floor(totalSeconds/86400),
+      hours:Math.floor(totalSeconds%86400/3600),
+      minutes:Math.floor(totalSeconds%3600/60),
+      seconds:totalSeconds%60
+    };
+    Object.keys(vals).forEach(name=>{
+      const target=panel.querySelector('[data-ny-unit="'+name+'"]');
+      const display=String(vals[name]).padStart(2,'0');
+      if(target&&target.textContent!==display)target.textContent=display;
+    });
+    if(diff===0&&!panel.classList.contains('ny-finished')){
+      panel.classList.add('ny-finished');
+      panel.querySelector('.ny-countdown-kicker').textContent='🎆 HEAD UUT AASTAT 2027! 🎆';
+      panel.querySelector('.ny-countdown-zone').textContent='Õnne ja rõõmu uuel aastal!';
+    }
+  }
+  setInterval(updateCountdown,1000);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden)updateCountdown()});
   decorateHome();
   const content=document.getElementById('content');
   if(content&&'MutationObserver' in window){
