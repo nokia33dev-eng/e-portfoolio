@@ -80,6 +80,7 @@ function applyContent(){
   if(Object.prototype.hasOwnProperty.call(v.texts,key)&&typeof v.texts[key]==='string'){
    if(n.textContent!==v.texts[key])n.textContent=v.texts[key];
   }
+  if(n.matches('h1[data-cinematic-title]'))n.setAttribute('data-cinematic-title',n.textContent);
   if(editing){n.setAttribute('contenteditable','plaintext-only');n.spellcheck=true}
   else{n.removeAttribute('contenteditable');n.removeAttribute('spellcheck')}
  });
@@ -213,6 +214,7 @@ async function fileToBase64(file){
 }
 async function uploadPhoto(file,replaceKey){
  if(!token||!editing)return;
+ const uploadPage=page;
  const allowed={'image/jpeg':'jpg','image/png':'png','image/webp':'webp','image/gif':'gif'};
  if(!allowed[file.type]){setMessage('Разрешены JPG, PNG, WebP и GIF.',true);return}
  if(file.size>5*1024*1024){setMessage('Фото должно быть не больше 5 МБ.',true);return}
@@ -226,12 +228,12 @@ async function uploadPhoto(file,replaceKey){
   })});
   const src='./'+path;
   if(replaceKey){
-   const draft=pageChanges(page);if(!draft.images)draft.images={};
+   const draft=pageChanges(uploadPage);if(!draft.images)draft.images={};
    draft.images[replaceKey]=src;
   }else{
-   const next=effective(page).photos.map(x=>({...x}));
+   const next=effective(uploadPage).photos.map(x=>({...x}));
    next.push({src,caption:'Minu foto'});
-   pageChanges(page).photos=next;
+   pageChanges(uploadPage).photos=next;
   }
   applyContent();markUnsaved();
   status.textContent='Фото загружено. Нажми «Сохранить», чтобы опубликовать изменение на странице.';
@@ -331,7 +333,7 @@ toolbar.addEventListener('click',e=>{
   applyContent();markUnsaved();
   const note=root.querySelector('.owner-note:last-child .owner-note-text');if(note){note.focus();note.scrollIntoView({behavior:'smooth',block:'center'})}
  }
- if(action==='photo'){if(!editing){editing=true;applyContent()}fileInput.click()}
+ if(action==='photo'){if(!editing){editing=true;applyContent()}delete fileInput.dataset.replaceKey;fileInput.click()}
  if(action==='save')saveChanges();
  if(action==='logout'){
   token='';editing=false;toolbar.hidden=true;changes={};applyContent();setMessage('Вы вышли.',false);
@@ -351,6 +353,7 @@ root.addEventListener('input',e=>{
  if(text&&!text.closest('.owner-extras')){
   const draft=pageChanges(page);if(!draft.texts)draft.texts={};
   draft.texts[text.dataset.ownerText]=text.textContent;
+  if(text.matches('h1[data-cinematic-title]'))text.setAttribute('data-cinematic-title',text.textContent);
   markUnsaved();return;
  }
  const note=e.target.closest('[data-note-index]');
