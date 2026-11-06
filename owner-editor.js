@@ -407,11 +407,13 @@ loginButton.onclick=authenticate;
 dialog.querySelector('.owner-close').onclick=()=>{dialog.hidden=true};
 dialog.querySelector('#owner-token').addEventListener('keydown',e=>{if(e.key==='Enter')authenticate()});
 dialog.addEventListener('click',e=>{if(e.target===dialog)dialog.hidden=true});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')dialog.hidden=true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){dialog.hidden=true;structurePanel.hidden=true;structurePanelOpen=false}
+ if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='s'&&token){e.preventDefault();saveChanges()}});
+window.addEventListener('beforeunload',e=>{if(token&&anyUnsaved()){e.preventDefault();e.returnValue=''}});
 
 const toolbar=el('div','owner-toolbar');
 toolbar.hidden=true;
-toolbar.innerHTML='<div class="owner-tools"><button type="button" data-action="edit">✎ Редактировать</button><button type="button" data-action="text">＋ Текст</button><button type="button" data-action="photo">＋ Фото</button><button type="button" data-action="save">💾 Сохранить</button><button type="button" data-action="logout">Выйти</button></div><p class="owner-status" role="status"></p>';
+toolbar.innerHTML='<div class="owner-tools"><button type="button" data-action="edit">✎ Редактировать</button><button type="button" data-action="structure">☷ Структура</button><button type="button" data-action="card">＋ Карточка</button><button type="button" data-action="text">＋ Текст</button><button type="button" data-action="photo">＋ Фото</button><button type="button" data-action="save">💾 Сохранить</button><button type="button" data-action="logout">Выйти</button></div><p class="owner-status" role="status"></p>';
 document.body.appendChild(toolbar);
 const status=toolbar.querySelector('.owner-status');
 const fileInput=el('input','owner-file');
@@ -569,24 +571,51 @@ pencil.onclick=()=>{
 toolbar.addEventListener('click',e=>{
  const b=e.target.closest('button[data-action]');if(!b||busy)return;
  const action=b.dataset.action;
+ if(action==='structure'){structurePanelOpen=!structurePanelOpen;structurePanel.hidden=!structurePanelOpen;if(structurePanelOpen)renderStructurePanel()}
+ if(action==='card')addBlock('card');
  if(action==='edit'){editing=!editing;applyContent();setMessage(editing?'Режим редактирования включён. Нажми на текст или фото.':'Режим просмотра включён.',false)}
- if(action==='text'){
-  if(!editing){editing=true;applyContent()}
-  const blocks=effective(page).blocks.map(x=>({...x}));
-  blocks.push({id:String(Date.now()),text:'Новый текст — нажми и напиши здесь.'});
-  pageChanges(page).blocks=blocks;
-  applyContent();markUnsaved();
-  const note=root.querySelector('.owner-note:last-child .owner-note-text');if(note){note.focus();note.scrollIntoView({behavior:'smooth',block:'center'})}
- }
+ if(action==='text')addBlock('text');
  if(action==='photo'){if(!editing){editing=true;applyContent()}delete fileInput.dataset.replaceKey;fileInput.click()}
  if(action==='save')saveChanges();
  if(action==='logout'){
-  token='';editing=false;toolbar.hidden=true;changes={};applyContent();setMessage('Вы вышли.',false);
+  token='';editing=false;toolbar.hidden=true;structurePanelOpen=false;structurePanel.hidden=true;saveDraftLocal();applyContent();setMessage('Вы вышли.',false);
   pencil.setAttribute('aria-label','Редактор владельца — вход');
  }
 });
 root.addEventListener('click',e=>{
  if(!editing||!token)return;
+ const hide=e.target.closest('[data-owner-card]');
+ if(hide){
+  e.preventDefault();e.stopPropagation();
+  const list=effective(page).hiddenCards.slice();
+  if(!list.includes(hide.dataset.ownerCard))list.push(hide.dataset.ownerCard);
+  pageChanges(page).hiddenCards=list;markUnsaved();applyContent();return;
+ }
+ const blockBtn=e.target.closest('[data-block-action]');
+ if(blockBtn){
+  e.preventDefault();e.stopPropagation();
+  const action=blockBtn.dataset.blockAction,index=Number(blockBtn.dataset.blockIndex);
+  const list=effective(page).blocks.map(x=>({...x}));
+  if(action==='delete'){if(!confirm('Удалить блок?'))return;list.splice(index,1)}
+  if(action==='up'||action==='down'){
+   const to=index+(action==='up'?-1:1);
+   if(to<0||to>=list.length)return;
+   [list[index],list[to]]=[list[to],list[index]];
+  }
+  if(action==='options'){
+   const block=list[index];if(!block)return;
+   if(block.type==='card'){
+    const target=prompt('Название страницы для кнопки «Открыть» (необязательно):',block.target||'');
+    if(target===null)return;block.target=target.trim();
+   }else if(block.type==='link'){
+    const url=prompt('HTTPS-ссылка:',block.url||'https://');
+    if(url===null)return;
+    if(url&&!/^https:\/\//i.test(url)){alert('Ссылка должна начинаться с https://');return}
+    block.url=url;
+   }else {setMessage('У этого блока нет дополнительных настроек.',false);return}
+  }
+  pageChanges(page).blocks=list;markUnsaved();renderExtras(effective(page));return;
+ }
  const image=e.target.closest('img[data-owner-image]');
  if(!image)return;
  e.preventDefault();e.stopPropagation();
@@ -604,7 +633,7 @@ root.addEventListener('input',e=>{
  const note=e.target.closest('[data-note-index]');
  if(note){
   const next=effective(page).blocks.map(x=>({...x}));
-  const i=Number(note.dataset.noteIndex);if(next[i])next[i].text=note.textContent;
+  const i=Number(note.dataset.noteIndex);if(next[i])next[i][note.dataset.noteField||'text']=note.textContent;
   pageChanges(page).blocks=next;markUnsaved();return;
  }
  const caption=e.target.closest('[data-photo-index]');
