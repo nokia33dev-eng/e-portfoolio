@@ -1,0 +1,72 @@
+/* CINEMATIC FX — five optional effects, built to complement Butcher Noir and New Year. */
+
+/* (1) Tiny floating red + gold sparks beyond the already animated hero. */
+.cinematic-embers{position:fixed;inset:0;z-index:6;overflow:hidden;pointer-events:none;opacity:.63;contain:layout paint}
+.cinematic-ember{position:absolute;left:var(--left);bottom:-16px;width:var(--size);height:var(--size);border-radius:50%;background:#ff4b63;box-shadow:0 0 8px 1px #ff4b63,0 0 18px 2px #ff4b6366;opacity:0;animation:cinematicEmberRise var(--duration) linear var(--delay) infinite;will-change:transform}
+.cinematic-ember.gold{background:#ffd083;box-shadow:0 0 9px 1px #ffd083,0 0 19px 2px #f0c46f77}
+@keyframes cinematicEmberRise{0%{transform:translate3d(0,0,0) scale(.55);opacity:0}12%{opacity:.8}72%{opacity:.5}100%{transform:translate3d(var(--drift),-112vh,0) scale(.12);opacity:0}}
+body.ny-theme .cinematic-embers{opacity:.38}
+
+/* (2) Soft mouse trail, only for devices with a fine pointer. */
+.cinematic-cursor{position:fixed;left:-400px;top:-400px;z-index:7;width:245px;height:245px;border-radius:50%;pointer-events:none;transform:translate3d(-50%,-50%,0);background:radial-gradient(circle,#ff455025 0%,#f32b4d12 36%,transparent 72%);filter:blur(8px);mix-blend-mode:screen;opacity:0;transition:opacity .22s ease}
+.cinematic-cursor.is-visible{opacity:1}
+body.ny-theme .cinematic-cursor{background:radial-gradient(circle,#ffc57528 0%,#ff5d7710 37%,transparent 72%)}
+
+/* (3) Moving polished-chrome reflection on E-PORTFOOLIO, keeps existing text colors. */
+.hero.hero-butchery h1[data-cinematic-title]{position:relative;display:inline-block;isolation:isolate}
+.hero.hero-butchery h1[data-cinematic-title]::after{content:attr(data-cinematic-title);position:absolute;inset:0;z-index:1;pointer-events:none;white-space:inherit;color:transparent;-webkit-text-fill-color:transparent;background:linear-gradient(105deg,transparent 0%,transparent 41%,#ffffffde 48%,#ffe6efeb 51%,transparent 58%,transparent 100%);background-size:270% 100%;-webkit-background-clip:text;background-clip:text;animation:cinematicChromeShine 6.6s ease-in-out infinite}
+@keyframes cinematicChromeShine{0%,14%{background-position:115% center}56%,100%{background-position:-112% center}}
+body.ny-theme .hero.hero-butchery h1[data-cinematic-title]::after{background-image:linear-gradient(105deg,transparent 0%,transparent 41%,#fffbe8 48%,#ffe9a4 51%,transparent 58%,transparent 100%)}
+
+/* (4) Neon orbit rotates AROUND the crossed knives, not the knives themselves. */
+.hero.hero-butchery .hero-blades{position:relative;display:grid;place-items:center;width:112px;height:106px;margin:0 auto 8px;filter:none;isolation:isolate}
+.hero.hero-butchery .hero-blades img{position:relative;z-index:2;display:block;width:82px;height:78px;object-fit:contain;filter:drop-shadow(0 0 13px #ff5a729d)}
+.cinematic-orbit{position:absolute;inset:2px 5px 2px 5px;border:1px solid #ff71815e;border-radius:50%;box-shadow:0 0 15px #ff466a4a,inset 0 0 13px #fd44661f;animation:cinematicOrbit 9s linear infinite;pointer-events:none}
+.cinematic-orbit::before,.cinematic-orbit::after{content:"";position:absolute;width:10px;height:10px;border-radius:50%;background:#fff0eb;box-shadow:0 0 9px 3px #ff4f67,0 0 22px 6px #ff455568}
+.cinematic-orbit::before{left:50%;top:-5px;transform:translateX(-50%)}
+.cinematic-orbit::after{left:50%;bottom:-5px;transform:translateX(-50%)}
+.cinematic-orbit-inner{position:absolute;inset:10px 13px;border-radius:50%;border:1px dashed #ff7d884d;animation:cinematicOrbit 16s linear reverse infinite;pointer-events:none}
+@keyframes cinematicOrbit{to{transform:rotate(360deg)}}
+body.ny-theme .cinematic-orbit{border-color:#f9d38f8a;box-shadow:0 0 22px #e7b85848,inset 0 0 14px #ffd48829}
+body.ny-theme .cinematic-orbit::before,body.ny-theme .cinematic-orbit::after{background:#fff8dc;box-shadow:0 0 9px 3px #e6c16c,0 0 20px 6px #e7b86e63}
+body.ny-theme .cinematic-orbit-inner{border-color:#ffcf8f63}
+
+/* (5) Carefully aligned raised cards and subtle travelling glossy light. */
+.card{position:relative;overflow:hidden;transition:transform .28s ease,border-color .28s ease,box-shadow .28s ease}
+.card:hover,.card:focus-within{transform:translateY(-7px) scale(1.008);box-shadow:0 22px 53px #000a,0 0 32px #ff45551e}
+.card::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 34%,#ffffff24 49%,transparent 63%);transform:translateX(-120%);transition:transform .8s ease}
+.card:hover::after,.card:focus-within::after{transform:translateX(120%)}
+.hero-quicklinks button,.card button,.back{position:relative;overflow:hidden}
+.hero-quicklinks button::after,.card button::after,.back::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(110deg,transparent 33%,#ffffff26 49%,transparent 66%);transform:translateX(-120%);transition:transform .7s ease}
+.hero-quicklinks button:hover::after,.hero-quicklinks button:focus-visible::after,.card button:hover::after,.card button:focus-visible::after,.back:hover::after,.back:focus-visible::after{transform:translateX(120%)}
+.hero-quicklinks button:hover,.hero-quicklinks button:focus-visible{box-shadow:inset 0 0 20px #ff526514,0 0 16px #ff455512;border-radius:13px}
+.card button:hover,.back:hover{box-shadow:0 0 22px #ff476d36;transform:translateY(-2px)}
+body.ny-theme .card:hover,body.ny-theme .card:focus-within{box-shadow:0 23px 53px #000a,0 0 28px #eac2782b}
+body.ny-theme .hero-quicklinks button:hover{box-shadow:inset 0 0 20px #ffdf9017,0 0 18px #f5ce7b20}
+
+/* Small optional effects switch above the already-present Christmas switch. */
+.cinematic-toggle{position:fixed;left:15px;bottom:77px;z-index:99;max-width:min(245px,82vw);border:1px solid #c14a6077;border-radius:12px;padding:9px 13px;color:#ffd8df;background:#1a121ae8;box-shadow:0 9px 24px #0008;backdrop-filter:blur(12px);font-size:12px;font-weight:750;cursor:pointer;transition:background .2s,border-color .2s}
+.cinematic-toggle:hover,.cinematic-toggle:focus-visible{background:#3c1929;border-color:#ff7288;outline-offset:3px}
+body.ny-theme .cinematic-toggle{border-color:#e2b97188;color:#ffe5ad}
+body.cinematic-effects-off .cinematic-embers,body.cinematic-effects-off .cinematic-cursor,body.cinematic-effects-off .cinematic-orbit,body.cinematic-effects-off .cinematic-orbit-inner{display:none!important}
+body.cinematic-effects-off .hero.hero-butchery h1[data-cinematic-title]::after{content:none}
+body.cinematic-effects-off .card::after,body.cinematic-effects-off .hero-quicklinks button::after,body.cinematic-effects-off .card button::after,body.cinematic-effects-off .back::after{content:none}
+body.cinematic-effects-off .cinematic-toggle{opacity:.75}
+
+@media(max-width:700px){
+ .cinematic-ember:nth-child(n+12){display:none}
+ .cinematic-cursor{display:none}
+ .hero.hero-butchery .hero-blades{width:87px;height:83px;margin-bottom:7px}
+ .hero.hero-butchery .hero-blades img{width:62px;height:59px}
+ .cinematic-orbit{inset:3px}
+ .cinematic-orbit-inner{inset:10px}
+ .cinematic-toggle{bottom:64px;left:10px;padding:8px 10px;font-size:11px}
+}
+@media(hover:none){.cinematic-cursor{display:none}}
+@media(prefers-reduced-motion:reduce){
+ .cinematic-embers,.cinematic-cursor,.cinematic-orbit,.cinematic-orbit-inner{display:none!important}
+ .hero.hero-butchery h1[data-cinematic-title]::after{content:none!important}
+ .card::after,.hero-quicklinks button::after,.card button::after,.back::after{content:none!important}
+ .cinematic-toggle{display:none!important}
+ .card,.hero-quicklinks button,.card button,.back{transition:none!important}
+}
