@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 106" role="img" aria-label="Nuga lõikab liha">
+<title>Nuga lõikab liha</title>
+<defs>
+ <linearGradient id="metal" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#fff7f2"/><stop offset=".52" stop-color="#f1e1e2"/><stop offset="1" stop-color="#aab4bc"/></linearGradient>
+ <linearGradient id="red" x1="0" y1="0" x2=".8" y2="1"><stop offset="0" stop-color="#fa4765"/><stop offset=".6" stop-color="#c62346"/><stop offset="1" stop-color="#7d102c"/></linearGradient>
+ <filter id="glow" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2.4"/></filter>
+</defs>
+<style>
+ .cut-knife{transform-origin:91px 33px;animation:cutAction 2.3s cubic-bezier(.55,.05,.4,.95) infinite;}
+ .cut-meat{transform-origin:65px 87px;animation:meatPress 2.3s ease-in-out infinite;}
+ .cut-spark{opacity:0;animation:cutSpark 2.3s linear infinite;}
+ @keyframes cutAction{0%,10%,100%{transform:translate(2px,-10px) rotate(-4deg)}38%,52%{transform:translate(-2px,7px) rotate(2deg)}70%{transform:translate(0px,-5px) rotate(-2deg)}}
+ @keyframes meatPress{0%,27%,70%,100%{transform:scale(1,1)}42%,54%{transform:scale(1.035,.94)}}
+ @keyframes cutSpark{0%,29%,59%,100%{opacity:0}39%,50%{opacity:1}}
+ @media(prefers-reduced-motion:reduce){.cut-knife,.cut-meat,.cut-spark{animation:none}.cut-knife{transform:translate(-2px,3px)}}
+</style>
+<!-- chopping board -->
+<path d="M8 99H119" stroke="#ffd18a" stroke-width="3" stroke-linecap="round" opacity=".85"/>
+<!-- red steak, separate trimmed slice at right -->
+<g class="cut-meat">
+<path d="M19 78Q22 66 44 65Q63 60 87 69Q101 73 99 84Q97 95 76 96H37Q21 94 19 84Z" fill="url(#red)" stroke="#fff0ec" stroke-width="3.2" stroke-linejoin="round"/>
+<path d="M37 75Q51 70 69 76M44 86Q58 81 70 84" fill="none" stroke="#ff9dad" stroke-width="2.6" stroke-linecap="round" opacity=".93"/>
+<path d="M98 74Q110 73 115 82Q119 92 108 95L100 94Z" fill="#db3152" stroke="#fff0ec" stroke-width="2.8" stroke-linejoin="round"/>
+<path d="M108 80L106 90" stroke="#ff9dad" stroke-width="2.2" stroke-linecap="round"/>
+</g>
+<!-- clear real kitchen knife: handle upper right, sharp cutting EDGE faces DOWN toward steak -->
+<g class="cut-knife">
+ <path d="M84 39L104 23Q109 19 113 22L119 27Q122 30 118 34L97 52Z" fill="#4b1b2b" stroke="#fff5f2" stroke-width="3.3" stroke-linejoin="round"/>
+ <path d="M102 32L103 32M111 29L112 29" stroke="#fff" stroke-width="4.7" stroke-linecap="round"/>
+ <path d="M27 63Q47 44 84 35L98 50L89 57Q59 69 22 73Q21 69 27 63Z" fill="url(#metal)" stroke="#fffaf7" stroke-width="3" stroke-linejoin="round"/>
+ <path d="M24 71Q56 67 87 55" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round"/>
+ <path d="M38 60Q55 50 80 44" fill="none" stroke="#867b84" stroke-width="1.6" stroke-linecap="round" opacity=".75"/>
+ <path d="M89 36L98 50" fill="none" stroke="#fff7f3" stroke-width="3.2"/>
+</g>
+<!-- star-shaped glints on impact, just above meat -->
+<g class="cut-spark" fill="none" stroke="#ffdfbd" stroke-width="2.6" stroke-linecap="round">
+ <path d="M17 65L11 61M22 61L20 55M12 73L7 74"/>
+</g>
+</svg>
