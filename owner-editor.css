@@ -1,0 +1,59 @@
+/* Owner editor for the public E-Portfoolio. All authoring controls are hidden from regular readers. */
+.owner-toolbar[hidden],.owner-dialog[hidden],.owner-file[hidden]{display:none!important}
+.owner-pencil{position:fixed;top:100px;right:18px;z-index:150;width:52px;height:52px;display:grid;place-items:center;border:1px solid #f38ca185;border-radius:16px;background:linear-gradient(145deg,#74233c,#250e1f);box-shadow:0 10px 26px #000b,0 0 18px #ff35553a;color:#fff0f3;font-size:31px;line-height:1;cursor:pointer;transition:transform .2s,background .2s,box-shadow .2s}
+.owner-pencil:hover,.owner-pencil:focus-visible{transform:translateY(-2px) rotate(-8deg);background:linear-gradient(145deg,#b13557,#431b2d);box-shadow:0 15px 35px #000c,0 0 28px #ff536c65;outline:2px solid #ff9faf;outline-offset:2px}
+.owner-dialog{position:fixed;inset:0;z-index:300;background:#050307d9;backdrop-filter:blur(13px);display:grid;place-items:center;padding:18px;overflow-y:auto}
+.owner-modal{width:min(100%,530px);position:relative;padding:37px clamp(20px,5vw,40px);background:linear-gradient(145deg,#29151f,#100e16);border:1px solid #ff647c87;border-radius:24px;box-shadow:0 28px 95px #000e,0 0 46px #ff526022;color:#f9f0f1}
+.owner-modal-icon{width:66px;height:66px;border:1px solid #ff687b88;border-radius:18px;background:#ff52661c;display:grid;place-items:center;font-size:39px;color:#ffc6ce;box-shadow:0 0 30px #ff53613c}
+.owner-modal h2{font-size:clamp(21px,3.3vw,29px);line-height:1.23;letter-spacing:-.02em;margin:24px 0 14px;color:#fff}
+.owner-modal p{color:#d9cbd0;font-size:14px;line-height:1.6;margin:9px 0 18px}
+.owner-modal label{display:block;margin:23px 0 9px;color:#ffb4c0;font-size:13px;font-weight:800;letter-spacing:.025em}
+.owner-modal input{display:block;width:100%;min-height:49px;padding:11px 14px;border:1px solid #b95c7177;border-radius:11px;color:#fff;background:#130f17;font-size:16px;font-family:ui-monospace,monospace}
+.owner-modal input:focus{outline:2px solid #fa6885;outline-offset:2px}
+.owner-login{margin-top:14px;width:100%;min-height:48px;border-radius:11px;border:1px solid #ff6e89;background:linear-gradient(120deg,#e84062,#a8203e);color:white;font-weight:800;cursor:pointer}
+.owner-login:hover{filter:brightness(1.17)}
+.owner-login:disabled{opacity:.65;cursor:wait}
+.owner-close{position:absolute;top:18px;right:19px;border:1px solid #fff4;border-radius:9px;background:#ffffff0d;color:white;width:36px;height:36px;font-size:25px;cursor:pointer}
+.owner-dialog-message{color:#ff9fae!important;min-height:1.3em;margin-bottom:2px!important;font-weight:750}
+.owner-help{font-size:12px!important;color:#bcaeb4!important;border-top:1px solid #ffb1bf2c;padding-top:18px;margin:14px 0 0!important}
+.owner-help a{color:#ffb6c3;text-decoration:underline;text-underline-offset:3px}
+.owner-toolbar{position:fixed;top:156px;right:18px;z-index:145;width:min(780px,calc(100vw - 36px));max-width:100%;padding:14px 16px 10px;border:1px solid #fa71878c;border-radius:17px;background:#1c1019ed;backdrop-filter:blur(18px);box-shadow:0 19px 52px #000e}
+.owner-tools{display:flex;justify-content:flex-end;align-items:center;flex-wrap:wrap;gap:8px}
+.owner-tools button{min-height:39px;border:1px solid #ff657a54;background:#482234;color:#fff4f6;padding:9px 13px;border-radius:10px;font-weight:750;font-size:13px;cursor:pointer}
+.owner-tools button:hover,.owner-tools button:focus-visible{background:#843149;border-color:#ff91a6;outline-offset:2px}
+.owner-tools button[data-action="save"]{background:#b32847;border-color:#ff7893}
+.owner-tools button[data-action="logout"]{background:#20141d;border-color:#73505c}
+.owner-tools button:disabled{opacity:.55;cursor:wait}
+.owner-status{margin:9px 3px 0!important;color:#cfc4c9;font-size:12px!important;line-height:1.4}
+.owner-status.unsaved{color:#ffcb9d}
+.owner-status.owner-error{color:#ff8796}
+#content.owner-editing [data-owner-text],#content.owner-editing .owner-note-text[contenteditable],#content.owner-editing .owner-photo-caption[contenteditable]{cursor:text;outline:1px dashed #ff728878;outline-offset:3px;border-radius:4px;transition:background .15s,outline-color .15s;min-width:16px}
+#content.owner-editing [data-owner-text]:hover,#content.owner-editing [contenteditable]:hover{background:#ff647713}
+#content.owner-editing [contenteditable]:focus{outline:2px solid #ffc0cc;outline-offset:4px;background:#ff657921}
+#content.owner-editing img.owner-replaceable{outline:3px dashed #ff6e91;outline-offset:3px;cursor:copy;filter:brightness(.94);transition:filter .2s}
+#content.owner-editing img.owner-replaceable:hover{filter:brightness(1.15)}
+.owner-extras{width:min(1120px,100%);margin:40px auto 60px;display:flex;flex-direction:column;gap:27px}
+.owner-extra-notes{display:grid;gap:15px}
+.owner-note{padding:25px;border:1px solid #ff7e8c38;border-radius:16px;background:linear-gradient(125deg,#261821,#110e13)}
+.owner-note-text{margin:0!important;color:#efe8ea;font-size:clamp(15px,1.5vw,19px);line-height:1.65;white-space:pre-wrap}
+.owner-remove{margin-top:15px;padding:8px 12px;background:#421b27;border:1px solid #ab4558;border-radius:9px;color:#ffbcc8;cursor:pointer;font-size:12px;font-weight:700}
+.owner-remove:hover{background:#76283b}
+.owner-gallery{margin-top:4px}
+.owner-gallery-title{margin:0 0 22px;color:#ffbdc7;font-size:clamp(22px,3vw,30px);font-weight:850}
+.owner-photo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,250px),1fr));gap:18px}
+.owner-photo{margin:0;min-width:0;padding:12px 12px 18px;border:1px solid #ff68764c;border-radius:17px;background:linear-gradient(130deg,#261822,#141116);box-shadow:0 9px 24px #0006;overflow:hidden}
+.owner-photo img{display:block;width:100%;height:220px;object-fit:cover;border-radius:10px;border:1px solid #ffffff1e}
+.owner-photo-caption{display:block;color:#e9dee2;margin:14px 5px 1px;line-height:1.5;overflow-wrap:anywhere;white-space:pre-wrap}
+.owner-photo .owner-remove{margin:13px 5px 0}
+body.ny-theme .owner-pencil{border-color:#ead092aa;box-shadow:0 12px 29px #000a,0 0 18px #e7c27d33}
+body.ny-theme .owner-toolbar{border-color:#e6ba7c96}
+@media(max-width:760px){
+ .owner-pencil{top:93px;right:10px;width:44px;height:44px;border-radius:12px;font-size:26px}
+ .owner-toolbar{top:143px;right:9px;width:calc(100vw - 18px);padding:10px}
+ .owner-tools{justify-content:center;gap:6px}
+ .owner-tools button{padding:8px 10px;min-height:35px;font-size:11px}
+ .owner-modal{padding:25px 20px}
+ .owner-photo-grid{grid-template-columns:1fr}
+ .owner-photo img{height:230px}
+}
+@media(prefers-reduced-motion:reduce){.owner-pencil,#content.owner-editing [data-owner-text],#content.owner-editing img.owner-replaceable{transition:none}}
