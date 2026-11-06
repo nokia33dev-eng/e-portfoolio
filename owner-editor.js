@@ -16,6 +16,9 @@ let editing=false;
 let page='Home';
 let data={version:1,pages:{}};
 let changes={};
+let structureChanges=null;
+let settingsChanges=null;
+const DRAFT_KEY='eportfoolio-admin-draft-v3';
 let busy=false;
 const textSelectors='h1,h2,h3,p,li,figcaption,.hero-id,.profession-sign > span';
 const skipSelector='.owner-extras,.ny-countdown,.ny-welcome,.ny-garland,.ny-switch,.cinematic-toggle,.hero-quicklinks,.contact-grid,.owner-dialog';
@@ -35,6 +38,32 @@ function pageData(source,p){
 function pageChanges(p){
  if(!changes[p])changes[p]={};return changes[p];
 }
+function structureState(){
+ if(structureChanges)return structureChanges;
+ if(data.structure)return data.structure;
+ return {groups:groups.map(g=>({title:g.title,items:g.items.slice()})),nestedItems:JSON.parse(JSON.stringify(nestedItems))};
+}
+function applyStructure(){
+ const state=structureState();
+ if(!state||!Array.isArray(state.groups))return;
+ groups.splice(0,groups.length,...state.groups.map(g=>({title:String(g.title),items:Array.isArray(g.items)?g.items.slice():[]})));
+ Object.keys(nestedItems).forEach(k=>delete nestedItems[k]);
+ Object.entries(state.nestedItems||{}).forEach(([key,value])=>{nestedItems[key]=Array.isArray(value)?value.slice():[]});
+ renderNav();
+}
+function saveDraftLocal(){
+ try{localStorage.setItem(DRAFT_KEY,JSON.stringify({changes,structureChanges,settingsChanges,timestamp:Date.now()}))}catch(e){}
+}
+function restoreDraftLocal(){
+ try{const backup=JSON.parse(localStorage.getItem(DRAFT_KEY)||'null');if(!backup)return;
+ if(backup.changes&&typeof backup.changes==='object')changes=backup.changes;
+ if(backup.structureChanges)structureChanges=backup.structureChanges;
+ if(backup.settingsChanges)settingsChanges=backup.settingsChanges;
+ }catch(e){}
+}
+function anyUnsaved(){return !!(structureChanges||settingsChanges||Object.values(changes).some(c=>Object.keys(c||{}).length))}
+function markStructureChanged(){applyStructure();saveDraftLocal();markUnsaved();if(structurePanelOpen)renderStructurePanel()}
+
 function currentPage(){
  try{return typeof current==='string'&&current?current:page}catch(e){return page}
 }
@@ -97,8 +126,10 @@ function applyContent(){
  toolbar.querySelector('[data-action="edit"]').textContent=editing?'✓ Закончить':'✎ Редактировать';
 }
 function markUnsaved(){
- status.textContent='● Есть несохранённые изменения';
+ status.textContent='● Изменения сохранены как черновик. Нажми «💾 Сохранить» для публикации.';
  status.classList.add('unsaved');
+ status.classList.remove('owner-error');
+ saveDraftLocal();
 }
 function renderExtras(v){
  const existing=root.querySelector('.owner-extras');
@@ -165,20 +196,30 @@ function decode(base64){
 }
 async function github(path,options){
  if(!token)throw new Error('Сначала войди как владелец.');
- const response=await fetch(path,{...options,headers:{
+ let response;
+ try{response=await fetch(path,{...options,cache:'no-store',headers:{
   'Accept':'application/vnd.github+json',
   'Authorization':'Bearer '+token,
   'X-GitHub-Api-Version':'2022-11-28',
   ...(options&&options.headers||{})
- }});
+ }})}catch(e){throw new Error('Не удалось связаться с GitHub. Проверь интернет. '+e.message)}
  const json=await response.json().catch(()=>({}));
- if(!response.ok)throw new Error((json.message||'GitHub API error')+' ('+response.status+')');
+ if(!response.ok){
+  let detail=json.message||'Ошибка GitHub';
+  if(response.status===401)detail='Неверный или истёкший GitHub-токен.';
+  if(response.status===403)detail='Недостаточно прав GitHub. В токене выбери e-portfoolio → Contents: Read and write, а не Read-only.';
+  if(response.status===404)detail='Токен не имеет доступа к e-portfoolio. Проверь Only select repositories → e-portfoolio.';
+  if(response.status===409)detail='Конфликт версий GitHub: файл менялся одновременно.';
+  if(response.status===422)detail='GitHub отклонил запись (проверь разрешение Contents: Read and write и ветку main): '+detail;
+  const error=new Error(detail+' (HTTP '+response.status+')');error.status=response.status;throw error;
+ }
  return json;
 }
 async function refreshPublic(){
  try{
   const r=await fetch('./'+CONTENT_FILE+'?v='+Date.now(),{cache:'no-store'});
   if(r.ok)data=validData(await r.json());
+  restoreDraftLocal();applyStructure();
  }catch(e){console.warn('Owner content not yet available:',e)}
  applyContent();
 }
@@ -242,29 +283,45 @@ async function uploadPhoto(file,replaceKey){
 }
 async function saveChanges(){
  if(!token||busy)return;
- const pending=Object.keys(changes).filter(p=>Object.keys(changes[p]).length);
- if(!pending.length){setMessage('Нет несохранённых изменений.',false);return}
+ const pending=Object.keys(changes).filter(p=>Object.keys(changes[p]||{}).length);
+ if(!pending.length&&!structureChanges&&!settingsChanges){setMessage('Нет несохранённых изменений.',false);return}
  busy=true;updateBusy();setMessage('Сохраняю изменения в GitHub…',false);
  try{
-  const remote=await github(API+CONTENT_FILE+'?ref=main');
-  const obj=validData(JSON.parse(decode(remote.content)));
-  if(!obj.pages)obj.pages={};
-  for(const name of pending){
-   const prior=pageData(obj,name),draft=changes[name];
-   const merged={...prior};
-   if(draft.texts)merged.texts={...(prior.texts||{}),...draft.texts};
-   if(draft.images)merged.images={...(prior.images||{}),...draft.images};
-   if(draft.photos)merged.photos=draft.photos;
-   if(draft.blocks)merged.blocks=draft.blocks;
-   obj.pages[name]=merged;
+  let confirmed=false;
+  for(let attempt=0;attempt<4;attempt++){
+   const remote=await github(API+CONTENT_FILE+'?ref=main');
+   const obj=validData(JSON.parse(decode(remote.content)));
+   if(!obj.pages)obj.pages={};
+   for(const name of pending){
+    const prior=pageData(obj,name),draft=changes[name],merged={...prior};
+    if(draft.texts)merged.texts={...(prior.texts||{}),...draft.texts};
+    if(draft.images)merged.images={...(prior.images||{}),...draft.images};
+    if(Array.isArray(draft.photos))merged.photos=draft.photos;
+    if(Array.isArray(draft.blocks))merged.blocks=draft.blocks;
+    if(Array.isArray(draft.hiddenCards))merged.hiddenCards=draft.hiddenCards;
+    obj.pages[name]=merged;
+   }
+   if(structureChanges)obj.structure=structureChanges;
+   if(settingsChanges)obj.settings={...(obj.settings||{}),...settingsChanges};
+   obj.version=3;
+   try{
+    const result=await github(API+CONTENT_FILE,{method:'PUT',body:JSON.stringify({
+     message:'Update E-Portfoolio structure and content via owner editor',
+     content:encode(JSON.stringify(obj,null,2)+'\n'),sha:remote.sha,branch:'main'
+    })});
+    if(!result.commit||!result.commit.sha)throw new Error('GitHub не подтвердил сохранение. Черновик сохранён локально.');
+    data=obj;changes={};structureChanges=null;settingsChanges=null;
+    try{localStorage.removeItem(DRAFT_KEY)}catch(e){}
+    setMessage('✓ Сохранено в GitHub! Публикация GitHub Pages может занять некоторое время.',false);
+    confirmed=true;
+    break;
+   }catch(e){
+    if((e.status===409||e.status===422)&&attempt<3){setMessage('Конфликт версий, повторяю запись '+(attempt+2)+'/4…',false);continue}
+    throw e;
+   }
   }
-  await github(API+CONTENT_FILE,{method:'PUT',body:JSON.stringify({
-   message:'Edit E-Portfoolio content via owner editor',content:encode(JSON.stringify(obj,null,2)+'\n'),
-   sha:remote.sha,branch:'main'
-  })});
-  data=obj;changes={};
-  setMessage('✓ Сохранено в GitHub! На сайте станет видно после публикации GitHub Pages.',false);
- }catch(e){setMessage('Не удалось сохранить: '+String(e.message||e),true)}
+  if(!confirmed)throw new Error('Не удалось подтвердить сохранение. Изменения остались в черновике.');
+ }catch(e){saveDraftLocal();setMessage('Не удалось сохранить: '+String(e.message||e)+' Черновик сохранён в браузере.',true)}
  finally{busy=false;updateBusy()}
 }
 function updateBusy(){
