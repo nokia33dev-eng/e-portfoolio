@@ -130,6 +130,7 @@ function applyContent(){
  });
  applySiteSettings();
  renderExtras(v);
+ if(structurePanelOpen)renderStructurePanel();
  root.classList.toggle('owner-editing',editing);
  toolbar.hidden=!token;
  toolbar.querySelector('[data-action="edit"]').textContent=editing?'✓ Закончить':'✎ Редактировать';
