@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 106" role="img" aria-label="Terava alumise teraga nuga lõikab liha">
+<title>Nuga lõikab liha terava alumise servaga</title>
+<defs>
+<linearGradient id="steel" x1="0" y1="0" x2="0.08" y2="1"><stop offset="0" stop-color="#fef8f1"/><stop offset=".55" stop-color="#b7bec7"/><stop offset=".79" stop-color="#f8fbff"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<linearGradient id="bevel" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d1cfd5"/><stop offset="1" stop-color="#fff"/></linearGradient>
+<linearGradient id="red" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ff6479"/><stop offset=".6" stop-color="#d62c4a"/><stop offset="1" stop-color="#89213c"/></linearGradient>
+</defs>
+<style>
+.knife{animation:knifePress 1.7s cubic-bezier(.55,.03,.41,.98) infinite}
+.meat{transform-origin:60px 89px;animation:meatCompress 1.7s ease-in-out infinite}
+.slice{animation:sliceShift 1.7s ease-in-out infinite}
+.cutspark{opacity:0;animation:cutSpark 1.7s linear infinite}
+@keyframes knifePress{0%,12%,100%{transform:translate(0,-15px)}43%,57%{transform:translate(-2px,7px)}75%{transform:translate(0,-10px)}}
+@keyframes meatCompress{0%,28%,74%,100%{transform:scaleY(1)}45%,57%{transform:scaleY(.92)}}
+@keyframes sliceShift{0%,33%,100%{transform:translateX(0)}50%,70%{transform:translateX(6px)}}
+@keyframes cutSpark{0%,37%,62%,100%{opacity:0}45%,55%{opacity:1}}
+@media(prefers-reduced-motion:reduce){.knife,.meat,.slice,.cutspark{animation:none!important}.knife{transform:translate(0,3px)}}
+</style>
+<path d="M7 100H120" stroke="#ffda9c" stroke-width="3" stroke-linecap="round"/>
+<g class="meat">
+<path d="M17 82Q21 69 39 70Q64 67 87 73Q103 78 101 86Q99 96 83 97H35Q20 96 17 86Z" fill="url(#red)" stroke="#fff0ee" stroke-width="3.2" stroke-linejoin="round"/>
+<path d="M27 81Q47 74 72 80M43 90Q63 86 78 90" fill="none" stroke="#ffa7ae" stroke-width="2.6" stroke-linecap="round"/>
+<path d="M83 74Q85 86 82 96" fill="none" stroke="#fbd1c5" stroke-width="2.2" opacity=".8"/>
+</g>
+<g class="slice">
+<path d="M102 77Q110 75 115 83Q118 94 106 96L99 95Q103 85 102 77Z" fill="#db3653" stroke="#ffe3df" stroke-width="2.8" stroke-linejoin="round"/>
+<path d="M110 83L108 92" stroke="#ffadb9" stroke-width="2.3" stroke-linecap="round"/>
+</g>
+<g class="knife">
+<!-- handle is away from meat at upper right -->
+<path d="M89 39L108 20Q112 17 116 20L122 26Q125 30 121 33L102 51L90 45Z" fill="#371a27" stroke="#fff9f6" stroke-width="3.5" stroke-linejoin="round"/>
+<circle cx="111" cy="27" r="2.3" fill="#fff4ef"/>
+<circle cx="103" cy="35" r="2.3" fill="#fff4ef"/>
+<!-- top spine is blunt, lower long horizontal blade is SHARP -->
+<path d="M35 38Q31 39 28 45L22 61Q20 65 23 70L94 67Q98 57 100 45L88 36Z" fill="url(#steel)" stroke="#fffaf8" stroke-width="2.8" stroke-linejoin="round"/>
+<path d="M25 62Q53 64 97 60L94 67L23 70Z" fill="url(#bevel)" opacity=".98"/>
+<path d="M23 70L94 67" fill="none" stroke="#ffffff" stroke-width="3.7" stroke-linecap="round"/>
+<path d="M39 47Q64 43 84 45" fill="none" stroke="#8b8c95" stroke-width="2.3" stroke-linecap="round" opacity=".65"/>
+<path d="M90 37L100 46" fill="none" stroke="#fff2e8" stroke-width="2.2"/>
+</g>
+<g class="cutspark" fill="none" stroke="#ffe0bd" stroke-width="2.4" stroke-linecap="round">
+<path d="M21 68L13 65M20 75L11 77M28 63L26 57"/>
+</g>
+</svg>
