@@ -20,8 +20,8 @@ let structureChanges=null;
 let settingsChanges=null;
 const DRAFT_KEY='eportfoolio-admin-draft-v3';
 let busy=false;
-const textSelectors='h1,h2,h3,p,li,figcaption,.hero-id,.profession-sign > span';
-const skipSelector='.owner-extras,.ny-countdown,.ny-welcome,.ny-garland,.ny-switch,.cinematic-toggle,.hero-quicklinks,.contact-grid,.owner-dialog';
+const textSelectors='h1,h2,h3,p,li,figcaption,.hero-id,.profession-sign > span,.hero-quicklinks button span';
+const skipSelector='.owner-extras,.ny-countdown,.ny-welcome,.ny-garland,.ny-switch,.cinematic-toggle,.contact-grid,.owner-dialog';
 
 function el(tag,cls,text){
  const n=document.createElement(tag);if(cls)n.className=cls;
@@ -73,7 +73,8 @@ function effective(p){
   texts:Object.assign({},stored.texts||{},draft.texts||{}),
   images:Object.assign({},stored.images||{},draft.images||{}),
   photos:Array.isArray(draft.photos)?draft.photos:(Array.isArray(stored.photos)?stored.photos:[]),
-  blocks:Array.isArray(draft.blocks)?draft.blocks:(Array.isArray(stored.blocks)?stored.blocks:[])
+  blocks:Array.isArray(draft.blocks)?draft.blocks:(Array.isArray(stored.blocks)?stored.blocks:[]),
+  hiddenCards:Array.isArray(draft.hiddenCards)?draft.hiddenCards:(Array.isArray(stored.hiddenCards)?stored.hiddenCards:[])
  };
 }
 function editableTexts(){
@@ -120,6 +121,14 @@ function applyContent(){
   if(editing)n.title='Нажми, чтобы заменить фотографию';
   else n.removeAttribute('title');
  });
+ root.querySelectorAll('.card').forEach((card,index)=>{
+  if(card.closest('.owner-extras'))return;
+  const id='card:'+index;
+  card.classList.toggle('owner-card-hidden',v.hiddenCards.includes(id));
+  card.querySelectorAll('.owner-card-hide').forEach(b=>b.remove());
+  if(editing){const hide=el('button','owner-card-hide','×');hide.type='button';hide.title='Скрыть карточку';hide.dataset.ownerCard=id;card.appendChild(hide)}
+ });
+ applySiteSettings();
  renderExtras(v);
  root.classList.toggle('owner-editing',editing);
  toolbar.hidden=!token;
@@ -132,52 +141,88 @@ function markUnsaved(){
  saveDraftLocal();
 }
 function renderExtras(v){
- const existing=root.querySelector('.owner-extras');
- if(existing)existing.remove();
+ const existing=root.querySelector('.owner-extras');if(existing)existing.remove();
  if(!v.blocks.length&&!v.photos.length&&!editing)return;
- const section=el('section','owner-extras');
- section.setAttribute('aria-label','Мои дополнительные материалы');
+ const section=el('section','owner-extras');section.setAttribute('aria-label','Добавленные материалы');
  if(v.blocks.length){
   const wrap=el('div','owner-extra-notes');
   v.blocks.forEach((item,index)=>{
-   const card=el('div','owner-note');
-   const paragraph=el('p','owner-note-text',String(item.text||''));
+   const type=item.type||'text';
+   const card=el('div','owner-note owner-note-'+type);
+   card.dataset.ownerBlock=String(index);
+   if(type==='divider')card.appendChild(el('hr','owner-block-divider'));
+   else if(type==='heading')card.appendChild(el('h2','owner-note-text',String(item.title||'Новый заголовок')));
+   else if(type==='card'){
+    const inner=el('div','owner-custom-card');
+    inner.appendChild(el('h3','owner-note-text',String(item.title||'Новая карточка')));
+    inner.appendChild(el('p','owner-note-text',String(item.text||'Описание карточки')));
+    if(item.target&&typeof show==='function'){
+     const b=el('button','owner-card-target','Открыть →');b.type='button';
+     b.onclick=()=>{if(!editing)show(item.target)};inner.appendChild(b);
+    }
+    card.appendChild(inner);
+   }else if(type==='quote')card.appendChild(el('blockquote','owner-note-text',String(item.text||'Цитата')));
+   else if(type==='link'){
+    const a=el('a','owner-block-link',String(item.title||'Ссылка'));
+    a.href=/^https:\/\//i.test(item.url||'')?item.url:'#';a.target='_blank';a.rel='noopener noreferrer';
+    if(editing)a.onclick=e=>e.preventDefault();
+    card.appendChild(a);
+   }else card.appendChild(el('p','owner-note-text',String(item.text||'')));
    if(editing){
-    paragraph.setAttribute('contenteditable','plaintext-only');
-    paragraph.dataset.noteIndex=String(index);
-    paragraph.spellcheck=true;
-    const remove=el('button','owner-remove','× Удалить текст');
-    remove.type='button';
-    remove.onclick=()=>{const next=effective(page).blocks.map(x=>({...x}));next.splice(index,1);pageChanges(page).blocks=next;renderExtras(effective(page));markUnsaved()};
-    card.append(paragraph,remove);
-   }else card.appendChild(paragraph);
+    const fields=card.querySelectorAll('.owner-note-text');
+    fields.forEach((field,i)=>{
+     field.setAttribute('contenteditable','plaintext-only');
+     field.dataset.noteIndex=String(index);
+     field.dataset.noteField=(type==='heading'||(type==='card'&&i===0))?'title':'text';
+     field.spellcheck=true;
+    });
+    const bar=el('div','owner-block-controls');
+    for(const [label,action] of [['↑','up'],['↓','down'],['⚙','options'],['×','delete']]){
+     const b=el('button','owner-remove',label);b.type='button';b.title=action;
+     b.dataset.blockAction=action;b.dataset.blockIndex=String(index);bar.appendChild(b);
+    }
+    card.appendChild(bar);
+   }
    wrap.appendChild(card);
   });
   section.appendChild(wrap);
  }
  if(v.photos.length){
-  const gallery=el('div','owner-gallery');
-  const heading=el('h2','owner-gallery-title','Minu fotod');
-  gallery.appendChild(heading);
+  const gallery=el('div','owner-gallery');gallery.appendChild(el('h2','owner-gallery-title','Minu fotod'));
   const grid=el('div','owner-photo-grid');
   v.photos.forEach((item,index)=>{
    const url=asImageUrl(item.src);if(!url)return;
    const figure=el('figure','owner-photo');
-   const img=el('img','');img.src=url;img.alt=String(item.caption||'Portfoolio foto');img.loading='lazy';
+   const img=el('img','');img.src=url;img.alt=String(item.caption||'Foto');img.loading='lazy';
    const caption=el('figcaption','owner-photo-caption',String(item.caption||'Minu foto'));
+   figure.append(img,caption);
    if(editing){
     caption.setAttribute('contenteditable','plaintext-only');caption.dataset.photoIndex=String(index);
-    const remove=el('button','owner-remove','× Удалить фото');
-    remove.type='button';
+    const remove=el('button','owner-remove','× Удалить фото');remove.type='button';
     remove.onclick=()=>{const next=effective(page).photos.map(x=>({...x}));next.splice(index,1);pageChanges(page).photos=next;renderExtras(effective(page));markUnsaved()};
-    figure.append(img,caption,remove);
-   }else figure.append(img,caption);
+    figure.appendChild(remove);
+   }
    grid.appendChild(figure);
   });
   gallery.appendChild(grid);section.appendChild(gallery);
  }
  root.appendChild(section);
 }
+function applySiteSettings(){
+ const x={...(data.settings||{}),...(settingsChanges||{})};
+ const brand=document.querySelector('.site-brand strong');if(brand&&x.brand)brand.textContent=x.brand;
+ const subtitle=document.querySelector('.site-brand small');if(subtitle&&x.subtitle)subtitle.textContent=x.subtitle;
+ const e=root.querySelector('.contact-tile[href^="mailto:"]');
+ if(e&&x.email&&/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.email)){
+  e.href='mailto:'+x.email;const val=e.querySelector('.contact-info > span');if(val)val.textContent=x.email;
+ }
+ const phone=root.querySelector('.contact-tile[href^="tel:"]');
+ if(phone&&x.phone&&/^\+?[\d ()-]{5,24}$/.test(x.phone)){
+  phone.href='tel:'+x.phone.replace(/[^\d+]/g,'');
+  const val=phone.querySelector('.contact-info > span');if(val)val.textContent=x.phone;
+ }
+}
+
 function setMessage(msg,isError){
  status.textContent=msg;
  status.classList.toggle('owner-error',!!isError);
