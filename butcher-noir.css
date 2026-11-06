@@ -251,3 +251,18 @@ main>.content-panel{padding:40px 22px}
 .profession-sign .cutting-meat-symbol{width:68px;height:62px;display:block;object-fit:contain;object-position:center;flex:0 0 68px;transform:none!important;margin:0}
 .profession-sign span{display:inline-block;line-height:1.16;text-align:center}
 @media(max-width:650px){.profession-sign{gap:9px}.profession-sign .cutting-meat-symbol{width:43px;height:43px;flex-basis:43px}}
+
+
+/* Contact page — clear tappable school email and Estonian phone number */
+.contact-page{max-width:1100px!important;margin:0 auto!important}
+.contact-page .contact-intro{color:#c9bec3;line-height:1.6;margin:8px 0 25px}
+.contact-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-top:16px}
+.contact-tile{display:flex;align-items:center;gap:17px;min-width:0;padding:27px 24px;border:1px solid #a4475d78;border-radius:18px;background:linear-gradient(140deg,#281923,#151217);box-shadow:0 15px 38px #0008;text-decoration:none;color:#f7f0f2;transition:transform .2s,border-color .2s,box-shadow .2s}
+.contact-tile:hover,.contact-tile:focus-visible{transform:translateY(-4px);border-color:#ff677e;box-shadow:0 18px 42px #000a,0 0 28px #ff3f581c;outline-offset:3px}
+.contact-symbol{display:grid;place-items:center;flex:0 0 58px;width:58px;height:58px;border:1px solid #fa718450;border-radius:14px;color:#ffb0bd;background:#ff566816;font-size:31px}
+.contact-info{display:flex;flex-direction:column;gap:7px;min-width:0}
+.contact-info strong{font-size:15px;color:#ff99aa}
+.contact-info>span{font-size:clamp(14px,1.4vw,19px);font-weight:700;overflow-wrap:anywhere}
+.contact-action{margin-left:auto;color:#ff9cae;font-size:24px}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr}.contact-tile{padding:20px 16px}.contact-symbol{width:47px;height:47px;flex-basis:47px;font-size:27px}.contact-info>span{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.contact-tile{transition:none}}
