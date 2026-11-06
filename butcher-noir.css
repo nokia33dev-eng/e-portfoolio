@@ -238,3 +238,9 @@ main>.content-panel{padding:40px 22px}
 .profession-sign:hover .cutting-meat-symbol{transform:rotate(-4deg) translateY(2px);transition:transform .3s ease}
 @media(max-width:650px){.profession-sign .cutting-meat-symbol{width:34px;height:34px}}
 @media(prefers-reduced-motion:reduce){.profession-sign:hover .cutting-meat-symbol{transform:none}}
+
+
+/* Slim reference-style knife slicing steak: legible proportions */
+.profession-sign .cutting-meat-symbol{width:71px;height:64px;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 0 9px #ff9eaa88)}
+.profession-sign:hover .cutting-meat-symbol{transform:none}
+@media(max-width:650px){.profession-sign .cutting-meat-symbol{width:45px;height:43px}}
