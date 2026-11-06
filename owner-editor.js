@@ -419,6 +419,149 @@ fileInput.type='file';fileInput.accept='image/jpeg,image/png,image/webp,image/gi
 fileInput.hidden=true;document.body.appendChild(fileInput);
 fileInput.addEventListener('change',onFileSelected);
 
+
+/* Owner studio: manage navigation hierarchy and content blocks without editing code. */
+let structurePanelOpen=false;
+const structurePanel=el('aside','owner-structure-panel');
+structurePanel.hidden=true;
+structurePanel.setAttribute('aria-label','Управление сайтом');
+structurePanel.innerHTML='<header class="owner-structure-head"><strong>✎ Управление сайтом</strong><button type="button" class="owner-structure-close" aria-label="Закрыть">×</button></header><div class="owner-structure-body"></div>';
+document.body.appendChild(structurePanel);
+const structureBody=structurePanel.querySelector('.owner-structure-body');
+structurePanel.querySelector('.owner-structure-close').onclick=()=>{structurePanel.hidden=true;structurePanelOpen=false};
+function control(label,action,gi=-1,ii=-1,ni=-1,level='group'){
+ const b=el('button','owner-structure-control',label);b.type='button';
+ Object.assign(b.dataset,{action,gi:String(gi),ii:String(ii),ni:String(ni),level});
+ return b;
+}
+function structNames(s){
+ const r=['Home','Minust','Oskused','Kontakt','Portfoolio'];
+ s.groups.forEach(g=>{r.push(g.title,...g.items);g.items.forEach(k=>r.push(...(s.nestedItems[k]||[])))});
+ return r;
+}
+function askStructName(old=''){
+ const value=prompt('Название раздела / подраздела:',old);
+ if(value===null)return null;
+ const name=value.trim().replace(/\s+/g,' ');
+ if(!name||name.length>100){alert('Название должно быть не длиннее 100 символов.');return null}
+ if(name!==old&&structNames(structureState()).includes(name)){alert('Название уже занято.');return null}
+ return name;
+}
+function rowFor(label,level,gi,ii,ni){
+ const row=el('div','owner-structure-row owner-structure-'+level);
+ row.appendChild(el('span','owner-structure-label',label));
+ const actions=el('div','owner-structure-actions');
+ for(const [caption,action] of [['✎','rename'],['↑','up'],['↓','down'],['×','delete']]){
+  const b=control(caption,action,gi,ii,ni,level);b.title=action;
+  if(label==='Home')b.disabled=true;
+  actions.appendChild(b);
+ }
+ row.appendChild(actions);return row;
+}
+function renderStructurePanel(){
+ if(!structurePanelOpen)return;
+ structureBody.replaceChildren();
+ const intro=el('p','owner-structure-help','Добавляй разделы, меняй их названия и порядок. Изменения публикуются кнопкой «💾 Сохранить».');
+ structureBody.appendChild(intro);
+ const s=structureState();
+ s.groups.forEach((g,gi)=>{
+  const box=el('div','owner-structure-group');
+  box.appendChild(rowFor(g.title,'group',gi,-1,-1));
+  (g.items||[]).forEach((item,ii)=>{
+   box.appendChild(rowFor(item,'item',gi,ii,-1));
+   (s.nestedItems[item]||[]).forEach((sub,ni)=>box.appendChild(rowFor(sub,'nested',gi,ii,ni)));
+   box.appendChild(control('＋ Вложенный пункт','addNested',gi,ii,-1,'nested'));
+  });
+  box.appendChild(control('＋ Подраздел','addItem',gi));
+  structureBody.appendChild(box);
+ });
+ structureBody.appendChild(control('＋ Новый раздел','addGroup'));
+ const blocks=el('section','owner-structure-blocks');
+ blocks.appendChild(el('h3','', 'Добавить на странице: '+page));
+ for(const [label,type] of [['Заголовок','heading'],['Текст','text'],['Карточка','card'],['Цитата','quote'],['Разделитель','divider'],['Ссылка','link']]){
+  const b=el('button','owner-structure-control','＋ '+label);b.type='button';b.dataset.blockType=type;
+  blocks.appendChild(b);
+ }
+ effective(page).hiddenCards.forEach(id=>{
+  const b=el('button','owner-structure-control','↺ Вернуть карточку '+id);b.type='button';b.dataset.restoreCard=id;blocks.appendChild(b);
+ });
+ structureBody.appendChild(blocks);
+ const settings=el('section','owner-structure-blocks');
+ settings.appendChild(el('h3','', 'Настройки и контакты'));
+ const values={...(data.settings||{}),...(settingsChanges||{})};
+ const defaults={brand:'Oleksandr Nadiein',subtitle:'Lihameister',email:'Oleksandr.nadiein@voco.ee',phone:'53775904'};
+ for(const [label,key] of [['Имя в шапке','brand'],['Специальность','subtitle'],['Почта','email'],['Номер телефона','phone']]){
+  const line=el('label','owner-structure-setting');
+  line.appendChild(el('span','',label));
+  const inp=el('input');inp.type='text';inp.dataset.siteSetting=key;inp.value=values[key]||defaults[key];
+  line.appendChild(inp);settings.appendChild(line);
+ }
+ structureBody.appendChild(settings);
+}
+function updateStructure(action,level,gi,ii,ni){
+ const s=JSON.parse(JSON.stringify(structureState()));
+ const g=s.groups[gi],item=g&&g.items[ii];
+ if(action==='addGroup'){const name=askStructName();if(!name)return;s.groups.push({title:name,items:[]})}
+ else if(action==='addItem'){if(!g)return;const name=askStructName();if(!name)return;g.items.push(name)}
+ else if(action==='addNested'){if(!item)return;const name=askStructName();if(!name)return;(s.nestedItems[item]||(s.nestedItems[item]=[])).push(name)}
+ else if(action==='rename'){
+  const old=level==='group'?g&&g.title:level==='item'?item:(s.nestedItems[item]||[])[ni];
+  if(!old||old==='Home')return;
+  const name=askStructName(old);if(!name||old===name)return;
+  if(level==='group')g.title=name;
+  if(level==='item'){g.items[ii]=name;if(s.nestedItems[old]){s.nestedItems[name]=s.nestedItems[old];delete s.nestedItems[old]}}
+  if(level==='nested')s.nestedItems[item][ni]=name;
+  if(data.pages[old]||changes[old]){const v=effective(old);changes[name]={...v}}
+ }else if(action==='delete'){
+  const name=level==='group'?g&&g.title:level==='item'?item:(s.nestedItems[item]||[])[ni];
+  if(!name||name==='Home'||!confirm('Удалить «'+name+'» из меню? Ранее сохранённые материалы останутся в истории GitHub.'))return;
+  if(level==='group'){s.groups.splice(gi,1);g.items.forEach(k=>delete s.nestedItems[k])}
+  if(level==='item'){g.items.splice(ii,1);delete s.nestedItems[item]}
+  if(level==='nested')s.nestedItems[item].splice(ni,1);
+ }else if(action==='up'||action==='down'){
+  const list=level==='group'?s.groups:level==='item'?g&&g.items:s.nestedItems[item];
+  if(!list)return;
+  const at=level==='group'?gi:level==='item'?ii:ni;
+  const next=at+(action==='up'?-1:1);
+  if(next<0||next>=list.length)return;
+  if(level==='group'&&(list[at].title==='Home'||list[next].title==='Home'))return;
+  [list[at],list[next]]=[list[next],list[at]];
+ }else return;
+ structureChanges=s;markStructureChanged();
+}
+function addBlock(type){
+ if(!editing){editing=true;applyContent()}
+ const blocks=effective(page).blocks.map(x=>({...x}));
+ const defs={
+  heading:{type:'heading',title:'Новый заголовок'},
+  text:{type:'text',text:'Новый текст — нажми и измени.'},
+  card:{type:'card',title:'Новая карточка',text:'Описание карточки'},
+  quote:{type:'quote',text:'Цитата'},divider:{type:'divider'},
+  link:{type:'link',title:'Открыть ссылку',url:'https://'}
+ };
+ if(!defs[type])return;
+ blocks.push({id:Date.now()+'-'+Math.random().toString(36).slice(2,6),...defs[type]});
+ pageChanges(page).blocks=blocks;applyContent();markUnsaved();
+ const item=root.querySelector('.owner-note:last-child .owner-note-text');
+ if(item){item.focus();item.scrollIntoView({behavior:'smooth',block:'center'})}
+}
+structureBody.addEventListener('click',e=>{
+ const b=e.target.closest('button');if(!b)return;
+ if(b.dataset.action){updateStructure(b.dataset.action,b.dataset.level,Number(b.dataset.gi),Number(b.dataset.ii),Number(b.dataset.ni));return}
+ if(b.dataset.blockType){addBlock(b.dataset.blockType);return}
+ if(b.dataset.restoreCard){
+  pageChanges(page).hiddenCards=effective(page).hiddenCards.filter(id=>id!==b.dataset.restoreCard);
+  markUnsaved();applyContent();
+ }
+});
+structureBody.addEventListener('change',e=>{
+ const input=e.target.closest('[data-site-setting]');if(!input)return;
+ const key=input.dataset.siteSetting,value=input.value.trim();
+ if(key==='email'&&!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)){alert('Неверный адрес почты.');return}
+ if(key==='phone'&&!/^\+?[\d ()-]{5,24}$/.test(value)){alert('Неверный номер телефона.');return}
+ settingsChanges={...(settingsChanges||{}),[key]:value};applySiteSettings();markUnsaved();
+});
+
 pencil.onclick=()=>{
  if(!token){openDialog();return}
  toolbar.hidden=!toolbar.hidden;
