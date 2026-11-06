@@ -282,7 +282,9 @@ async function authenticate(){
   const u=await r.json();
   if(!r.ok)throw new Error('Токен недействителен или истёк.');
   if(String(u.login||'').toLowerCase()!==OWNER)throw new Error('Только владелец репозитория '+OWNER+' может войти.');
-  token=next;field.value='';dialog.hidden=true;
+  token=next;
+  await github(API+CONTENT_FILE+'?ref=main');
+  field.value='';dialog.hidden=true;
   pencil.setAttribute('aria-label','Открыть редактор владельца');
   editing=true;
   setMessage('Вы вошли как владелец. Нажимай на текст или фото для изменения.',false);
@@ -502,6 +504,7 @@ function renderStructurePanel(){
 }
 function updateStructure(action,level,gi,ii,ni){
  const s=JSON.parse(JSON.stringify(structureState()));
+ const currentBefore=currentPage();let nextRoute=currentBefore;
  const g=s.groups[gi],item=g&&g.items[ii];
  if(action==='addGroup'){const name=askStructName();if(!name)return;s.groups.push({title:name,items:[]})}
  else if(action==='addItem'){if(!g)return;const name=askStructName();if(!name)return;g.items.push(name)}
@@ -514,6 +517,7 @@ function updateStructure(action,level,gi,ii,ni){
   if(level==='item'){g.items[ii]=name;if(s.nestedItems[old]){s.nestedItems[name]=s.nestedItems[old];delete s.nestedItems[old]}}
   if(level==='nested')s.nestedItems[item][ni]=name;
   if(data.pages[old]||changes[old]){const v=effective(old);changes[name]={...v}}
+  if(currentBefore===old)nextRoute=name;
  }else if(action==='delete'){
   const name=level==='group'?g&&g.title:level==='item'?item:(s.nestedItems[item]||[])[ni];
   if(!name||name==='Home'||!confirm('Удалить «'+name+'» из меню? Ранее сохранённые материалы останутся в истории GitHub.'))return;
@@ -530,6 +534,8 @@ function updateStructure(action,level,gi,ii,ni){
   [list[at],list[next]]=[list[next],list[at]];
  }else return;
  structureChanges=s;markStructureChanged();
+ const names=structNames(s);if(!names.includes(nextRoute))nextRoute='Home';
+ if(typeof show==='function')show(nextRoute);
 }
 function addBlock(type){
  if(!editing){editing=true;applyContent()}
@@ -616,6 +622,8 @@ root.addEventListener('click',e=>{
   }
   pageChanges(page).blocks=list;markUnsaved();renderExtras(effective(page));return;
  }
+ const quick=e.target.closest('.hero-quicklinks button[data-go]');
+ if(quick&&e.target.closest('[contenteditable]')){e.preventDefault();e.stopPropagation();return}
  const image=e.target.closest('img[data-owner-image]');
  if(!image)return;
  e.preventDefault();e.stopPropagation();
