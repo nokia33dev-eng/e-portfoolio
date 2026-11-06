@@ -12,7 +12,7 @@ meat:svg('<path d="M8 3C3 4 2 9 3 13s4 8 10 8 9-3 9-8c0-4-3-6-6-7S12 2 8 3z"/><p
 tools:svg('<path d="m4 3 16 18M20 3 4 21M5 3 3 5l4 4 2-2m6 10 2-2 4 4-2 2m1-17 2 2-4 4-2-2M3 20l-1 2"/>'),
 shield:svg('<path d="M12 2 21 6v6c0 5-3 8-9 10-6-2-9-5-9-10V6z"/><path d="m8 12 3 3 5-6"/>')
 };
-const blades='<svg viewBox="0 0 64 64" aria-hidden="true" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M10 8c14 5 23 15 29 28l-5 5C21 34 12 25 6 12z" stroke-width="2.5"/><path d="M54 8C40 13 31 23 25 36l5 5c13-7 22-16 28-29z" stroke-width="2.5"/><path d="m35 40 13 16m-4-11 9 11M29 40 16 56m4-11-9 11" stroke-width="3"/></svg>';
+const blades='<img src="./crossed-knives.svg?v=20261106-new-logo" alt="" draggable="false" loading="eager">';
 const oldHeader=document.querySelector('header');
 oldHeader.outerHTML='<header class="new-header"><div class="site-brand" id="brandHome" role="button" tabindex="0" aria-label="Avaleht"><span class="brand-symbol">'+blades+'</span><span><strong>Oleksandr Nadiein</strong><small>Lihameister</small></span></div><nav class="site-links" aria-label="Peamenüü"><button type="button" data-top="Home">'+icon.home+'Avaleht</button><button type="button" data-top="Minust">'+icon.user+'Minust</button><button type="button" data-top="Portfoolio">'+icon.briefcase+'Portfoolio</button><button type="button" data-top="Oskused">'+icon.star+'Oskused</button><button type="button" data-top="Kontakt">'+icon.mail+'Kontakt</button></nav><button class="menu-toggle" id="toggle" aria-label="Ava menüü" type="button">☰ Menüü</button></header>';
 document.querySelector('.layout').insertAdjacentHTML('beforebegin','<div class="nav-backdrop" id="navBackdrop"></div>');
