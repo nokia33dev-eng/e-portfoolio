@@ -231,3 +231,10 @@ main>.content-panel{padding:40px 22px}
 .brand-symbol img{display:block;width:60px;height:60px;object-fit:contain;filter:drop-shadow(0 0 5px #ff627a55)}
 .hero-blades img{display:block;width:86px;height:80px;object-fit:contain;filter:drop-shadow(0 0 10px #ff627a80)}
 @media(max-width:650px){.brand-symbol img{width:45px;height:45px}.hero-blades img{width:65px;height:58px}}
+
+
+/* Knife actually slicing meat — LIHAMEISTER emblem */
+.profession-sign .cutting-meat-symbol{display:block;width:53px;height:53px;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 0 9px #ff748383)}
+.profession-sign:hover .cutting-meat-symbol{transform:rotate(-4deg) translateY(2px);transition:transform .3s ease}
+@media(max-width:650px){.profession-sign .cutting-meat-symbol{width:34px;height:34px}}
+@media(prefers-reduced-motion:reduce){.profession-sign:hover .cutting-meat-symbol{transform:none}}
