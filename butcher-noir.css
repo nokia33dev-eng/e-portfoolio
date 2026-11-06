@@ -244,3 +244,10 @@ main>.content-panel{padding:40px 22px}
 .profession-sign .cutting-meat-symbol{width:71px;height:64px;object-fit:contain;flex:0 0 auto;filter:drop-shadow(0 0 9px #ff9eaa88)}
 .profession-sign:hover .cutting-meat-symbol{transform:none}
 @media(max-width:650px){.profession-sign .cutting-meat-symbol{width:45px;height:43px}}
+
+
+/* Precisely align the slicing emblem beside LIHAMEISTER */
+.profession-sign{display:inline-flex;align-items:center;justify-content:center;gap:15px;vertical-align:middle}
+.profession-sign .cutting-meat-symbol{width:68px;height:62px;display:block;object-fit:contain;object-position:center;flex:0 0 68px;transform:none!important;margin:0}
+.profession-sign span{display:inline-block;line-height:1.16;text-align:center}
+@media(max-width:650px){.profession-sign{gap:9px}.profession-sign .cutting-meat-symbol{width:43px;height:43px;flex-basis:43px}}
