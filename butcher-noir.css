@@ -226,3 +226,8 @@ main>.content-panel{padding:40px 22px}
 @keyframes fxIconPulse{0%,100%{filter:drop-shadow(0 0 6px #ff2945)}50%{filter:drop-shadow(0 0 18px #ff3b5b)}}
 @media(max-width:650px){.hero.hero-butchery .fx-ember:nth-child(n+13){display:none}}
 @media(prefers-reduced-motion:reduce){.hero.hero-butchery .fx-embers,.hero.hero-butchery .fx-stars,.hero.hero-butchery .fx-light{display:none!important}.hero.hero-butchery h1,.hero.hero-butchery .hero-content,.hero.hero-butchery .hero-quicklinks svg{animation:none!important}.fx-reveal{opacity:1!important;transform:none!important;transition:none!important}}
+
+/* True crossed butcher knives emblem, based on the approved illustration */
+.brand-symbol img{display:block;width:60px;height:60px;object-fit:contain;filter:drop-shadow(0 0 5px #ff627a55)}
+.hero-blades img{display:block;width:86px;height:80px;object-fit:contain;filter:drop-shadow(0 0 10px #ff627a80)}
+@media(max-width:650px){.brand-symbol img{width:45px;height:45px}.hero-blades img{width:65px;height:58px}}
