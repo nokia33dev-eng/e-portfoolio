@@ -118,3 +118,7 @@ body.ny-theme .owner-toolbar{border-color:#e6ba7c96}
  .owner-extra-notes{grid-template-columns:1fr}
  .owner-toolbar{top:145px!important}
 }
+
+/* Keep the editing toolbar reachable above the structure manager on phones. */
+@media(max-width:760px){.owner-structure-panel{top:255px;bottom:8px;max-height:calc(100vh - 263px)}.owner-structure-panel .owner-structure-head{padding:11px 13px}}
+@media(max-width:420px){.owner-structure-panel{top:283px;max-height:calc(100vh - 291px)}}
